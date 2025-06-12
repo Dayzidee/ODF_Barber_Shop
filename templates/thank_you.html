@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title | default('Thank You - ODF Barber Shop') }}</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Roboto", "Poppins", sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding-top: 70px;
+        color: #333;
+      }
+
+      .navbar {
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .logo img {
+        height: 50px;
+        border-radius: 5px;
+      }
+
+      .nav-links {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+
+      .nav-links li {
+        margin-left: 25px;
+      }
+
+      .nav-links li a {
+        color: #ecf0f1;
+        text-decoration: none;
+        font-size: 1em;
+        padding: 5px 0;
+        transition: color 0.3s ease;
+      }
+
+      .nav-links li a:hover {
+        color: #e74c3c;
+        border-bottom: 2px solid #e74c3c;
+      }
+
+      .thank-you-section {
+        padding: 80px 20px;
+        min-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .thank-you-message {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 30px;
+        transition: transform 0.3s ease;
+      }
+
+      .thank-you-message:hover {
+        transform: translateY(-5px);
+      }
+
+      .thank-you-message h1 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-size: 2.5em;
+      }
+
+      .thank-you-message .message {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+        color: #333;
+      }
+
+      .thank-you-message .subtitle {
+        font-size: 1.1em;
+        color: #555;
+        margin-bottom: 30px;
+      }
+
+      .thank-you-icon {
+        font-size: 5em;
+        color: #e74c3c;
+        margin-bottom: 20px;
+      }
+
+      .next-steps {
+        background-color: #f8f8f8;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+        text-align: left;
+      }
+
+      .next-steps h3 {
+        color: #2c3e50;
+        margin-bottom: 15px;
+      }
+
+      .next-steps ul {
+        padding-left: 20px;
+      }
+
+      .next-steps li {
+        margin-bottom: 10px;
+      }
+
+      .action-buttons {
+        margin-top: 30px;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 12px 25px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        margin: 0 10px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .btn-primary {
+        background-color: #e74c3c;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #c0392b;
+        transform: translateY(-2px);
+      }
+
+      .btn-secondary {
+        background-color: #3498db;
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+      }
+
+      .contact-info {
+        margin-top: 30px;
+        font-size: 0.9em;
+        color: #777;
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+        .thank-you-message {
+          padding: 25px;
+        }
+        .btn {
+          display: block;
+          margin: 10px auto;
+          width: 80%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ODF Barber Shop Navigation Bar -->
+    <nav class="navbar" id="navbar">
+      <div class="container nav-container">
+        <a href="/" class="nav-logo">ODF Barber Shop</a>
+        <ul class="nav-menu" id="nav-menu-list">
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#services">Services</a></li>
+          <li><a href="/#gallery">Gallery</a></li>
+          <li><a href="/portfolio">Portfolio</a></li>
+          <li>
+            <a
+              href="{{ url_for('book_appointment') }}"
+              class="nav-cta active-link"
+              >Book Now</a
+            >
+          </li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+        <div class="menu-toggle" id="mobile-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+    </nav>
+
+    <section class="thank-you-section">
+      <div class="container">
+        <div class="thank-you-message" data-aos="zoom-in" data-aos-delay="200">
+          <div class="thank-you-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h1>{{ message | default('Thank You!') }}</h1>
+          <p class="subtitle">
+            {{ subtitle | default('Your appointment request has been submitted
+            successfully.') }}
+          </p>
+
+          <div class="next-steps" data-aos="fade-up" data-aos-delay="400">
+            <h3>What happens next?</h3>
+            <ul>
+              <li>Our team will review your appointment request</li>
+              <li>
+                You'll receive a confirmation call or email within 24 hours
+              </li>
+              <li>We'll discuss any specific needs for your appointment</li>
+              <li>
+                Your barber will arrive at the scheduled time with all necessary
+                equipment
+              </li>
+            </ul>
+          </div>
+
+          <div class="action-buttons" data-aos="fade-up" data-aos-delay="600">
+            <a href="{{ url_for('home') }}" class="btn btn-primary"
+              >Return to Home</a
+            >
+            <a
+              href="{{ url_for('book_appointment') }}"
+              class="btn btn-secondary"
+              >Book Another Appointment</a
+            >
+          </div>
+
+          <div class="contact-info">
+            <p>
+              Questions? Contact us at
+              <a href="mailto:williamskent25@gmail.com"
+                >williamskent25@gmail.com</a
+              >
+              or call <a href="tel:+234 911 468 3483">+234 911 468 3483</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>
+        © <span id="currentYear">2025</span> ODF Barber Shop. All Rights
+        Reserved.
+      </p>
+    </footer>
+
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      // Initialize AOS
+      AOS.init({
+        duration: 800,
+        easing: "ease-in-out",
+        once: true,
+      });
+
+      // Update current year
+      document.getElementById("currentYear").textContent =
+        new Date().getFullYear();
+
+      // Mobile menu toggle
+      const mobileMenu = document.getElementById("mobile-menu");
+      const navLinks = document.querySelector(".nav-links");
+
+      if (mobileMenu) {
+        mobileMenu.addEventListener("click", function () {
+          mobileMenu.classList.toggle("active");
+          navLinks.classList.toggle("active");
+        });
+      }
+    </script>
+  </body>
+</html>

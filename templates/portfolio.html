@@ -1,0 +1,1932 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Portfolio - ODF Barber Shop</title>
+        <link rel="stylesheet" href="/static/css/style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link
+            href="https://unpkg.com/aos@2.3.1/dist/aos.css"
+            rel="stylesheet"
+        />
+        <style>
+            /* Portfolio specific styles */
+            .portfolio-header {
+                background-color: #2c3e50;
+                color: #fff;
+                padding: 100px 0 50px;
+                text-align: center;
+                position: relative;
+            }
+
+            .portfolio-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1;
+            }
+
+            .portfolio-header-content {
+                position: relative;
+                z-index: 2;
+            }
+
+            .portfolio-header h1 {
+                font-size: 3em;
+                margin-bottom: 20px;
+            }
+
+            .portfolio-header p {
+                font-size: 1.2em;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+
+            /* Filter controls */
+            .filter-container {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+                margin: 40px 0;
+                padding: 0 20px;
+            }
+
+            .filter-btn {
+                background-color: #f4f4f4;
+                color: #333;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 30px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-weight: 500;
+            }
+
+            .filter-btn:hover {
+                background-color: #e0e0e0;
+            }
+
+            .filter-btn.active {
+                background-color: #3498db;
+                color: white;
+            }
+
+            /* Search box */
+            .portfolio-search {
+                max-width: 500px;
+                margin: 0 auto 40px;
+                position: relative;
+            }
+
+            .portfolio-search input {
+                width: 100%;
+                padding: 12px 20px;
+                border-radius: 30px;
+                border: 1px solid #ddd;
+                font-size: 1em;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            }
+
+            .portfolio-search button {
+                position: absolute;
+                right: 5px;
+                top: 5px;
+                background: #3498db;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+
+            .portfolio-search button:hover {
+                background: #2980b9;
+            }
+
+            /* Portfolio grid */
+            .portfolio-container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 50px 20px;
+            }
+
+            .portfolio-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 20px;
+                margin-bottom: 40px;
+            }
+
+            .portfolio-item {
+                position: relative;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+                cursor: pointer;
+                background-color: #fff;
+            }
+
+            .portfolio-item:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
+
+            .portfolio-item img {
+                width: 100%;
+                height: 300px;
+                object-fit: cover;
+                display: block;
+                transition:
+                    transform 0.5s ease,
+                    opacity 0.5s ease;
+                opacity: 1; /* Images visible by default */
+            }
+
+            .portfolio-item:hover img {
+                transform: scale(1.05);
+            }
+
+            .portfolio-item-overlay {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: rgba(0, 0, 0, 0.75);
+                color: white;
+                padding: 15px;
+                transform: translateY(100%);
+                transition: transform 0.3s ease;
+            }
+
+            .portfolio-item:hover .portfolio-item-overlay {
+                transform: translateY(0);
+            }
+
+            .portfolio-item-title {
+                font-weight: bold;
+                font-size: 1.1em;
+                margin: 0 0 5px;
+            }
+
+            .portfolio-item-category {
+                font-size: 0.9em;
+                color: #3498db;
+                margin: 0 0 10px;
+            }
+
+            .portfolio-item-actions {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .btn-sm {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+
+            .share-btn {
+                background: transparent;
+                border: none;
+                color: white;
+                font-size: 1.2em;
+                cursor: pointer;
+                transition: color 0.3s ease;
+            }
+
+            .share-btn:hover {
+                color: #3498db;
+            }
+
+            /* Video overlay styles */
+            .video-thumbnail {
+                position: relative;
+            }
+
+            .video-play-button {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 60px;
+                height: 60px;
+                background-color: rgba(0, 0, 0, 0.6);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 24px;
+                transition: all 0.3s ease;
+            }
+
+            .video-thumbnail:hover .video-play-button {
+                background-color: rgba(52, 152, 219, 0.8);
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+
+            /* Lightbox video styles */
+            .lightbox-video {
+                max-width: 100%;
+                max-height: 80vh;
+                border-radius: 5px;
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Share popup */
+            .share-popup {
+                position: absolute;
+                bottom: 70px;
+                right: 15px;
+                background: white;
+                border-radius: 5px;
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+                padding: 10px;
+                display: none;
+                z-index: 10;
+            }
+
+            .share-popup.show {
+                display: block;
+                animation: fadeIn 0.3s ease;
+            }
+
+            .share-popup a {
+                display: inline-block;
+                width: 35px;
+                height: 35px;
+                line-height: 35px;
+                text-align: center;
+                border-radius: 50%;
+                margin: 0 5px;
+                color: white;
+                transition: transform 0.3s ease;
+            }
+
+            .share-popup a:hover {
+                transform: scale(1.1);
+            }
+
+            .share-popup .facebook {
+                background: #1877f2;
+            }
+
+            .share-popup .twitter {
+                background: #1da1f2;
+            }
+
+            .share-popup .whatsapp {
+                background: #25d366;
+            }
+
+            .share-popup .instagram {
+                background: #e1306c;
+            }
+
+            /* Lightbox */
+            .lightbox {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .lightbox.show {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .lightbox-content {
+                position: relative;
+                max-width: 90%;
+                max-height: 90%;
+            }
+
+            .lightbox-img {
+                max-width: 100%;
+                max-height: 80vh;
+                border-radius: 5px;
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            }
+
+            .lightbox-close {
+                position: absolute;
+                top: -40px;
+                right: 0;
+                font-size: 2em;
+                color: white;
+                cursor: pointer;
+                transition: color 0.3s ease;
+            }
+
+            .lightbox-close:hover {
+                color: #e74c3c;
+            }
+
+            .lightbox-nav {
+                position: absolute;
+                top: 50%;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                transform: translateY(-50%);
+            }
+
+            .lightbox-nav button {
+                background: rgba(0, 0, 0, 0.5);
+                color: white;
+                border: none;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                font-size: 1.5em;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+
+            .lightbox-nav button:hover {
+                background: rgba(0, 0, 0, 0.8);
+            }
+
+            .lightbox-caption {
+                color: white;
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            /* CTA Section */
+            .portfolio-cta {
+                background: linear-gradient(
+                        rgba(52, 152, 219, 0.8),
+                        rgba(44, 62, 80, 0.9)
+                    ),
+                    url("/static/images/IMG-20250524-WA0001.jpg");
+                background-size: cover;
+                background-position: center;
+                color: white;
+                text-align: center;
+                padding: 80px 20px;
+                margin: 50px 0;
+                border-radius: 10px;
+            }
+
+            .portfolio-cta h2 {
+                font-size: 2.5em;
+                margin: 0 0 20px;
+            }
+
+            .portfolio-cta p {
+                font-size: 1.2em;
+                max-width: 700px;
+                margin: 0 auto 30px;
+            }
+
+            /* Loading animation */
+            .loader {
+                display: none;
+                text-align: center;
+                padding: 30px 0;
+            }
+
+            .loader.show {
+                display: block;
+            }
+
+            .loader-spinner {
+                width: 50px;
+                height: 50px;
+                border: 5px solid #f3f3f3;
+                border-top: 5px solid #3498db;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 15px;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+
+            /* No results message */
+            .no-results {
+                text-align: center;
+                padding: 50px 20px;
+                color: #666;
+                font-size: 1.2em;
+                display: none;
+            }
+
+            .no-results.show {
+                display: block;
+            }
+
+            .no-results i {
+                font-size: 3em;
+                color: #ddd;
+                margin-bottom: 20px;
+                display: block;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .portfolio-header h1 {
+                    font-size: 2.2em;
+                }
+
+                .portfolio-header p {
+                    font-size: 1.1em;
+                }
+
+                .portfolio-grid {
+                    grid-template-columns: repeat(
+                        auto-fill,
+                        minmax(250px, 1fr)
+                    );
+                }
+
+                .portfolio-item img {
+                    height: 250px;
+                }
+
+                .filter-container {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .filter-btn {
+                    width: 100%;
+                    max-width: 250px;
+                }
+
+                .portfolio-cta h2 {
+                    font-size: 2em;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .portfolio-header h1 {
+                    font-size: 1.8em;
+                }
+
+                .portfolio-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .portfolio-item img {
+                    height: 220px;
+                }
+
+                .portfolio-cta h2 {
+                    font-size: 1.8em;
+                }
+
+                .portfolio-cta p {
+                    font-size: 1em;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Navigation Bar -->
+        <nav class="navbar" id="navbar">
+            <div class="container nav-container">
+                <a href="/" class="nav-logo">ODF Barber Shop</a>
+                <ul class="nav-menu" id="nav-menu-list">
+                    <li><a href="/#about">About</a></li>
+                    <li><a href="/#services">Services</a></li>
+                    <li><a href="/#gallery">Gallery</a></li>
+                    <li>
+                        <a href="/portfolio" class="active-link">Portfolio</a>
+                    </li>
+                    <li>
+                        <a href="/book" class="nav-cta">Book Now</a>
+                    </li>
+                    <li><a href="/#contact">Contact</a></li>
+                </ul>
+                <div class="menu-toggle" id="mobile-menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <!-- Portfolio Header -->
+            <section class="portfolio-header">
+                <div class="portfolio-overlay"></div>
+                <div class="portfolio-header-content">
+                    <h1 data-aos="fade-down" data-aos-delay="200">
+                        ODF Barber Shop Portfolio
+                    </h1>
+                    <p data-aos="fade-up" data-aos-delay="300">
+                        Browse through our collection of premium haircuts,
+                        fades, beard trims, and styles created by our expert
+                        barber.
+                    </p>
+                </div>
+            </section>
+
+            <div class="portfolio-container">
+                <!-- Filter Buttons -->
+                <div
+                    class="filter-container"
+                    data-aos="fade-up"
+                    data-aos-delay="100"
+                >
+                    <button class="filter-btn active" data-filter="all">
+                        All Styles
+                    </button>
+                    <button class="filter-btn" data-filter="fade">Fades</button>
+                    <button class="filter-btn" data-filter="classic">
+                        Classic Cuts
+                    </button>
+                    <button class="filter-btn" data-filter="beard">
+                        Beard Styling
+                    </button>
+                    <button class="filter-btn" data-filter="special">
+                        Special Styles
+                    </button>
+                    <button class="filter-btn" data-filter="braids">
+                        Braids & Locks
+                    </button>
+                    <button class="filter-btn" data-filter="video">
+                        Videos
+                    </button>
+                </div>
+
+                <!-- Portfolio Grid -->
+                <div class="portfolio-grid">
+                    <!-- Fade category items -->
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="300"
+                        data-category="special"
+                        data-title="Textured Top"
+                    >
+                        <img
+                            src="/static/images/textured top.jpg"
+                            alt="Textured Top"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">Textured Top</h3>
+                            <p class="portfolio-item-category">
+                                Special Styles
+                            </p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="100"
+                        data-category="fade"
+                        data-title="High Fade"
+                    >
+                        <img
+                            src="/static/images/IMG-20250524-WA0003.jpg"
+                            alt="High Fade"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">High Fade</h3>
+                            <p class="portfolio-item-category">Fade</p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="200"
+                        data-category="fade"
+                        data-title="Low Fade"
+                    >
+                        <img src="/static/images/low fade.jpg" alt="Low Fade" />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">Low Fade</h3>
+                            <p class="portfolio-item-category">Fade</p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="300"
+                        data-category="fade"
+                        data-title="Skin Fade"
+                    >
+                        <img
+                            src="/static/images/IMG-20250524-WA0009.jpg"
+                            alt="Skin Fade"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">Skin Fade</h3>
+                            <p class="portfolio-item-category">Fade</p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-category="fade"
+                        data-title="Burst Fade"
+                    >
+                        <img
+                            src="/static/images/Burst Fade.jpg"
+                            alt="Burst Fade"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">Burst Fade</h3>
+                            <p class="portfolio-item-category">Fade</p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="100"
+                        data-category="fade"
+                        data-title="Temple Fade"
+                    >
+                        <img
+                            src="/static/images/Temple Fade.jpg"
+                            alt="Temple Fade"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">Temple Fade</h3>
+                            <p class="portfolio-item-category">Fade</p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Classic Cuts category items -->
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="200"
+                        data-category="classic"
+                        data-title="Classic Gentleman's Cut"
+                    >
+                        <img
+                            src="/static/images/gentleman.jpg"
+                            alt="Classic Gentleman's Cut"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">
+                                Classic Gentleman's Cut
+                            </h3>
+                            <p class="portfolio-item-category">Classic Cuts</p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="300"
+                        data-category="classic"
+                        data-title="Business Professional"
+                    >
+                        <img
+                            src="/static/images/Professional.jpg"
+                            alt="Business Professional"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">
+                                Business Professional
+                            </h3>
+                            <p class="portfolio-item-category">Classic Cuts</p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-category="classic"
+                        data-title="Tapered Cut"
+                    >
+                        <img src="/static/images/taper.jpg" alt="Tapered Cut" />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">Tapered Cut</h3>
+                            <p class="portfolio-item-category">Classic Cuts</p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="100"
+                        data-category="classic"
+                        data-title="Clean Cut"
+                    >
+                        <img
+                            src="/static/images/Clean Taper.jpg"
+                            alt="Clean Cut"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">Clean Cut</h3>
+                            <p class="portfolio-item-category">Classic Cuts</p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Beard Styling category items -->
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="200"
+                        data-category="braids"
+                        data-title="Locks"
+                    >
+                        <img
+                            src="/static/images/Locks.jpg"
+                            alt="Beard Sculpting"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">Locks</h3>
+                            <p class="portfolio-item-category">Locks Styling</p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="300"
+                        data-category="beard"
+                        data-title="Full Beard Lineup"
+                    >
+                        <img
+                            src="/static/images/beard sculpt.jpeg"
+                            alt="Full Beard Lineup"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">
+                                Full Beard Lineup
+                            </h3>
+                            <p class="portfolio-item-category">Beard Styling</p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-category="Braids"
+                        data-title="Braids"
+                    >
+                        <img
+                            src="/static/images/braids.jpg"
+                            alt="Goatee Styling"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">Braids Styling</h3>
+                            <p class="portfolio-item-category">
+                                Braids Styling
+                            </p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Special Styles category items -->
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="100"
+                        data-category="special"
+                        data-title="Twist Dreads"
+                    >
+                        <img
+                            src="/static/images/twist-dreads.jpg"
+                            alt="Twist Dreads"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">Twist Dreads</h3>
+                            <p class="portfolio-item-category">
+                                Special Styles
+                            </p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="portfolio-item"
+                        data-aos="fade-up"
+                        data-aos-delay="200"
+                        data-category="special"
+                        data-title="Creative Design"
+                    >
+                        <img
+                            src="/static/images/creative design.jpg"
+                            alt="Creative Design"
+                        />
+                        <div class="portfolio-item-overlay">
+                            <h3 class="portfolio-item-title">
+                                Creative Design
+                            </h3>
+                            <p class="portfolio-item-category">
+                                Special Styles
+                            </p>
+                            <div class="portfolio-item-actions">
+                                <a href="/book" class="btn btn-primary btn-sm"
+                                    >Book This Style</a
+                                >
+                                <button class="share-btn portfolio-share-btn">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <div class="share-popup social-share-popup">
+                                    <a href="#" class="facebook"
+                                        ><i class="fab fa-facebook-f"></i
+                                    ></a>
+                                    <a href="#" class="twitter"
+                                        ><i class="fab fa-twitter"></i
+                                    ></a>
+                                    <a href="#" class="whatsapp"
+                                        ><i class="fab fa-whatsapp"></i
+                                    ></a>
+                                    <a href="#" class="instagram"
+                                        ><i class="fab fa-instagram"></i
+                                    ></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kids Cuts category items -->
+                </div>
+
+                <!-- Video Items -->
+                <div
+                    class="portfolio-item"
+                    data-aos="fade-up"
+                    data-category="video"
+                    data-title="Premium Fade"
+                >
+                    <div class="video-thumbnail">
+                        <img
+                            src="/static/images/fade design.jpeg"
+                            alt="Premium Fade Tutorial"
+                        />
+                        <div class="video-play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-item-overlay">
+                        <h3 class="portfolio-item-title">
+                            Premium Fade Tutorial
+                        </h3>
+                        <p class="portfolio-item-category">Videos</p>
+                        <div class="portfolio-item-actions">
+                            <a href="/book" class="btn btn-primary btn-sm"
+                                >Book This Style</a
+                            >
+                            <button class="share-btn portfolio-share-btn">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                            <div class="share-popup social-share-popup">
+                                <a
+                                    href="https://www.facebook.com/sharer/sharer.php?u=https://www.example.com/portfolio"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="facebook"
+                                    aria-label="Share on Facebook"
+                                    ><i class="fab fa-facebook-f"></i
+                                ></a>
+                                <a
+                                    href="https://twitter.com/intent/tweet?url=https://www.example.com/portfolio&text=Check%20out%20this%20awesome%20haircut%20from%20ODF%20Barber%20Shop!"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="twitter"
+                                    aria-label="Share on Twitter"
+                                    ><i class="fab fa-twitter"></i
+                                ></a>
+                                <a
+                                    href="https://wa.me/?text=Check%20out%20this%20awesome%20haircut%20from%20ODF%20Barber%20Shop!%20https://www.example.com/portfolio"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="whatsapp"
+                                    aria-label="Share on WhatsApp"
+                                    ><i class="fab fa-whatsapp"></i
+                                ></a>
+                                <a
+                                    href="https://www.instagram.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="instagram"
+                                    aria-label="Share on Instagram"
+                                    ><i class="fab fa-instagram"></i
+                                ></a>
+                            </div>
+                        </div>
+                    </div>
+                    <video class="hidden-video" style="display: none">
+                        <source
+                            src="/static/images/premium fade.mp4"
+                            type="video/mp4"
+                        />
+                    </video>
+                </div>
+
+                <div
+                    class="portfolio-item"
+                    data-aos="fade-up"
+                    data-aos-delay="100"
+                    data-category="video"
+                    data-title="Beard Sculpting Process"
+                >
+                    <div class="video-thumbnail">
+                        <img
+                            src="/static/images/beardstub.jpeg"
+                            alt="Beard Sculpting Process"
+                        />
+                        <div class="video-play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-item-overlay">
+                        <h3 class="portfolio-item-title">
+                            Beard Sculpting Process
+                        </h3>
+                        <p class="portfolio-item-category">Videos</p>
+                        <div class="portfolio-item-actions">
+                            <a href="book" class="btn btn-primary btn-sm"
+                                >Book This Style</a
+                            >
+                            <button class="share-btn portfolio-share-btn">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                            <div class="share-popup social-share-popup">
+                                <a
+                                    href="https://www.facebook.com/sharer/sharer.php?u=https://www.example.com/portfolio"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="facebook"
+                                    aria-label="Share on Facebook"
+                                    ><i class="fab fa-facebook-f"></i
+                                ></a>
+                                <a
+                                    href="https://twitter.com/intent/tweet?url=https://www.example.com/portfolio&text=Check%20out%20this%20awesome%20haircut%20from%20ODF%20Barber%20Shop!"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="twitter"
+                                    aria-label="Share on Twitter"
+                                    ><i class="fab fa-twitter"></i
+                                ></a>
+                                <a
+                                    href="https://wa.me/?text=Check%20out%20this%20awesome%20haircut%20from%20ODF%20Barber%20Shop!%20https://www.example.com/portfolio"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="whatsapp"
+                                    aria-label="Share on WhatsApp"
+                                    ><i class="fab fa-whatsapp"></i
+                                ></a>
+                                <a href="#" class="instagram"
+                                    ><i class="fab fa-instagram"></i
+                                ></a>
+                            </div>
+                        </div>
+                    </div>
+                    <video class="hidden-video" style="display: none">
+                        <source
+                            src="/static/images/beards.mp4"
+                            type="video/mp4"
+                        />
+                    </video>
+                </div>
+
+                <div
+                    class="portfolio-item"
+                    data-aos="fade-up"
+                    data-aos-delay="200"
+                    data-category="video"
+                    data-title="Executive Cut Showcase"
+                >
+                    <div class="video-thumbnail">
+                        <img
+                            src="/static/images/executiveee.jpeg"
+                            alt="Executive Cut Showcase"
+                        />
+                        <div class="video-play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-item-overlay">
+                        <h3 class="portfolio-item-title">
+                            Executive Cut Showcase
+                        </h3>
+                        <p class="portfolio-item-category">Videos</p>
+                        <div class="portfolio-item-actions">
+                            <a href="/book" class="btn btn-primary btn-sm"
+                                >Book This Style</a
+                            >
+                            <button class="share-btn portfolio-share-btn">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                            <div class="share-popup social-share-popup">
+                                <a
+                                    href="https://www.facebook.com/sharer/sharer.php?u=https://www.example.com/portfolio"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="facebook"
+                                    aria-label="Share on Facebook"
+                                    ><i class="fab fa-facebook-f"></i
+                                ></a>
+                                <a
+                                    href="https://twitter.com/intent/tweet?url=https://www.example.com/portfolio&text=Check%20out%20this%20awesome%20haircut%20from%20ODF%20Barber%20Shop!"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="twitter"
+                                    aria-label="Share on Twitter"
+                                    ><i class="fab fa-twitter"></i
+                                ></a>
+                                <a
+                                    href="https://wa.me/?text=Check%20out%20this%20awesome%20haircut%20from%20ODF%20Barber%20Shop!%20https://www.example.com/portfolio"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="whatsapp"
+                                    aria-label="Share on WhatsApp"
+                                    ><i class="fab fa-whatsapp"></i
+                                ></a>
+                                <a href="#" class="instagram"
+                                    ><i class="fab fa-instagram"></i
+                                ></a>
+                            </div>
+                        </div>
+                    </div>
+                    <video class="hidden-video" style="display: none">
+                        <source
+                            src="/static/images/executive.mp4"
+                            type="video/mp4"
+                        />
+                    </video>
+                </div>
+
+                <div
+                    class="portfolio-item"
+                    data-aos="fade-up"
+                    data-aos-delay="300"
+                    data-category="video"
+                    data-title="Special Design Technique"
+                >
+                    <div class="video-thumbnail">
+                        <img
+                            src="/static/images/special des.jpeg"
+                            alt="Special Design Technique"
+                        />
+                        <div class="video-play-button">
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="portfolio-item-overlay">
+                        <h3 class="portfolio-item-title">
+                            Special Design Technique
+                        </h3>
+                        <p class="portfolio-item-category">Videos</p>
+                        <div class="portfolio-item-actions">
+                            <a href="/book" class="btn btn-primary btn-sm"
+                                >Book This Style</a
+                            >
+                            <button class="share-btn portfolio-share-btn">
+                                <i class="fas fa-share-alt"></i>
+                            </button>
+                            <div class="share-popup social-share-popup">
+                                <a
+                                    href="https://www.facebook.com/sharer/sharer.php?u=https://www.example.com/portfolio"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="facebook"
+                                    aria-label="Share on Facebook"
+                                    ><i class="fab fa-facebook-f"></i
+                                ></a>
+                                <a
+                                    href="https://twitter.com/intent/tweet?url=https://www.example.com/portfolio&text=Check%20out%20this%20awesome%20haircut%20from%20ODF%20Barber%20Shop!"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="twitter"
+                                    aria-label="Share on Twitter"
+                                    ><i class="fab fa-twitter"></i
+                                ></a>
+                                <a
+                                    href="https://wa.me/?text=Check%20out%20this%20awesome%20haircut%20from%20ODF%20Barber%20Shop!%20https://www.example.com/portfolio"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="whatsapp"
+                                    aria-label="Share on WhatsApp"
+                                    ><i class="fab fa-whatsapp"></i
+                                ></a>
+                                <a href="#" class="instagram"
+                                    ><i class="fab fa-instagram"></i
+                                ></a>
+                            </div>
+                        </div>
+                    </div>
+                    <video class="hidden-video" style="display: none">
+                        <source
+                            src="/static/images/speciallly.mp4"
+                            type="video/mp4"
+                        />
+                    </video>
+                </div>
+
+                <!-- No Results Message -->
+                <div class="no-results" id="no-results">
+                    <i class="fas fa-search"></i>
+                    <p>
+                        No styles match your search. Try different keywords or
+                        clear filters.
+                    </p>
+                    <button class="btn btn-secondary" id="clear-filters">
+                        Clear Filters
+                    </button>
+                </div>
+
+                <!-- Load More Button -->
+                <div style="text-align: center; margin-top: 30px">
+                    <button
+                        class="btn btn-secondary"
+                        id="load-more-btn"
+                        data-aos="fade-up"
+                    >
+                        Load More Styles
+                    </button>
+                </div>
+
+                <!-- Loader -->
+                <div class="loader" id="loader">
+                    <div class="loader-spinner"></div>
+                    <p>Loading more styles...</p>
+                </div>
+
+                <!-- Call to Action -->
+                <div class="portfolio-cta" data-aos="fade-up">
+                    <h2>Ready for Your Next Style?</h2>
+                    <p>
+                        Experience premium barbering services in the comfort of
+                        your own home.
+                    </p>
+                    <a href="/book" class="btn btn-primary btn-hero"
+                        >Book Your Appointment</a
+                    >
+                </div>
+            </div>
+
+            <!-- Lightbox -->
+            <div class="lightbox portfolio-lightbox" id="portfolio-lightbox">
+                <div class="lightbox-content">
+                    <span class="lightbox-close" id="lightbox-close"
+                        ><i class="fas fa-times"></i
+                    ></span>
+                    <img
+                        src=""
+                        alt=""
+                        class="lightbox-img lightbox-image"
+                        id="lightbox-image"
+                        style="display: none"
+                    />
+                    <video
+                        controls
+                        class="lightbox-video"
+                        id="lightbox-video"
+                        style="display: none"
+                    >
+                        <source
+                            src=""
+                            type="video/mp4"
+                            id="lightbox-video-source"
+                        />
+                        Your browser does not support the video tag.
+                    </video>
+                    <div class="lightbox-nav">
+                        <button id="prev-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="next-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="lightbox-caption">
+                        <h3 id="lightbox-title"></h3>
+                        <p id="lightbox-category"></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>
+                © <span id="currentYear"></span> ODF Barber Shop. All Rights
+                Reserved.
+            </p>
+        </footer>
+
+        <!-- Scripts -->
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Initialize AOS
+                AOS.init({
+                    duration: 800,
+                    easing: "ease-in-out",
+                    once: true
+                });
+
+                // Set current year in footer
+                document.getElementById("currentYear").textContent =
+                    new Date().getFullYear();
+
+                // Mobile menu toggle
+                const mobileMenu = document.getElementById("mobile-menu");
+                const navMenu = document.getElementById("nav-menu-list");
+
+                mobileMenu.addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    navMenu.classList.toggle("active");
+                });
+
+                // Portfolio filtering
+                const filterButtons = document.querySelectorAll(".filter-btn");
+                const portfolioItems =
+                    document.querySelectorAll(".portfolio-item");
+                const noResults = document.getElementById("no-results");
+                const clearFiltersBtn =
+                    document.getElementById("clear-filters");
+
+                // Filter button click handlers
+                filterButtons.forEach(button => {
+                    button.addEventListener("click", function () {
+                        // Remove active class from all buttons
+                        filterButtons.forEach(btn =>
+                            btn.classList.remove("active")
+                        );
+                        // Add active class to clicked button
+                        this.classList.add("active");
+
+                        const filter = this.getAttribute("data-filter");
+                        let itemsVisible = 0;
+
+                        portfolioItems.forEach(item => {
+                            if (
+                                filter === "all" ||
+                                item.getAttribute("data-category") === filter
+                            ) {
+                                item.style.display = "block";
+                                itemsVisible++;
+                            } else {
+                                item.style.display = "none";
+                            }
+                        });
+
+                        // Show/hide no results message
+                        if (itemsVisible === 0) {
+                            noResults.classList.add("show");
+                        } else {
+                            noResults.classList.remove("show");
+                        }
+                    });
+                });
+
+                // Clear filters button
+                clearFiltersBtn.addEventListener("click", function () {
+                    // Reset filter to "All"
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove("active");
+                        if (btn.getAttribute("data-filter") === "all") {
+                            btn.classList.add("active");
+                        }
+                    });
+
+                    // Show all items
+                    portfolioItems.forEach(item => {
+                        item.style.display = "block";
+                    });
+
+                    // Clear search input
+                    // Reset any potential search filtering
+
+                    // Hide no results message
+                    noResults.classList.remove("show");
+                });
+
+                // Social share buttons
+
+                // Social share buttons
+                const shareButtons = document.querySelectorAll(
+                    ".portfolio-share-btn"
+                );
+
+                shareButtons.forEach(button => {
+                    button.addEventListener("click", function (e) {
+                        e.stopPropagation();
+
+                        // Close all other popups first
+                        document
+                            .querySelectorAll(".social-share-popup.show")
+                            .forEach(popup => {
+                                if (popup !== this.nextElementSibling) {
+                                    popup.classList.remove("show");
+                                }
+                            });
+
+                        // Toggle this popup
+                        this.nextElementSibling.classList.toggle("show");
+                    });
+                });
+
+                // Close share popups when clicking elsewhere
+                document.addEventListener("click", function () {
+                    document
+                        .querySelectorAll(".social-share-popup.show")
+                        .forEach(popup => {
+                            popup.classList.remove("show");
+                        });
+                });
+
+                // Lightbox functionality
+                const lightbox = document.getElementById("portfolio-lightbox");
+                const lightboxImg = document.getElementById("lightbox-image");
+                const lightboxClose = document.getElementById("lightbox-close");
+                const lightboxTitle = document.getElementById("lightbox-title");
+                const lightboxCategory =
+                    document.getElementById("lightbox-category");
+                const prevBtn = document.getElementById("prev-btn");
+                const nextBtn = document.getElementById("next-btn");
+
+                let currentIndex = 0;
+                const visibleItems = () =>
+                    Array.from(portfolioItems).filter(
+                        item => item.style.display !== "none"
+                    );
+
+                // Open lightbox when clicking on portfolio items
+                portfolioItems.forEach(item => {
+                    item.addEventListener("click", function (e) {
+                        // Don't open lightbox if clicking on buttons
+                        if (e.target.closest(".portfolio-item-actions")) {
+                            return;
+                        }
+
+                        const title = this.querySelector(
+                            ".portfolio-item-title"
+                        ).textContent;
+                        const category = this.querySelector(
+                            ".portfolio-item-category"
+                        ).textContent;
+                        const isVideo = category.trim() === "Videos";
+
+                        // Set up title and category for both types
+                        lightboxTitle.textContent = title;
+                        lightboxCategory.textContent = category;
+
+                        if (isVideo) {
+                            // Handle video content
+                            const video = this.querySelector(".hidden-video");
+                            const videoSource = video.querySelector("source");
+
+                            // Update video source
+                            document.getElementById(
+                                "lightbox-video-source"
+                            ).src = videoSource.src;
+
+                            // Show video, hide image
+                            lightboxImg.style.display = "none";
+                            const videoElement =
+                                document.getElementById("lightbox-video");
+                            videoElement.style.display = "block";
+
+                            // Add error handling for video
+                            videoElement.onerror = function () {
+                                console.error("Error loading video");
+                                // Display a fallback message
+                                videoElement.innerHTML =
+                                    '<p style="color: white; text-align: center; padding: 40px;">Video could not be loaded. Please try again later.</p>';
+                            };
+
+                            // Load the video
+                            videoElement.load();
+                        } else {
+                            // Handle image content
+                            const image = this.querySelector("img");
+
+                            // Update image source
+                            lightboxImg.src = image.src;
+
+                            // Show image, hide video
+                            lightboxImg.style.display = "block";
+                            document.getElementById(
+                                "lightbox-video"
+                            ).style.display = "none";
+                        }
+
+                        // Set current item index for navigation
+                        currentIndex = visibleItems().indexOf(this);
+
+                        // Show lightbox
+                        lightbox.classList.add("show");
+                        document.body.style.overflow = "hidden"; // Prevent scrolling
+                    });
+                });
+
+                // Close lightbox
+                lightboxClose.addEventListener("click", function () {
+                    lightbox.classList.remove("show");
+                    document.body.style.overflow = ""; // Restore scrolling
+
+                    // Pause video if playing
+                    const video = document.getElementById("lightbox-video");
+                    if (video) {
+                        video.pause();
+                    }
+                });
+
+                // Escape key to close lightbox
+                document.addEventListener("keydown", function (e) {
+                    if (
+                        e.key === "Escape" &&
+                        lightbox.classList.contains("show")
+                    ) {
+                        lightbox.classList.remove("show");
+                        document.body.style.overflow = "";
+                    }
+                });
+
+                // Navigate through lightbox
+                prevBtn.addEventListener("click", function () {
+                    const items = visibleItems();
+                    currentIndex =
+                        (currentIndex - 1 + items.length) % items.length;
+                    updateLightboxContent(items[currentIndex]);
+                });
+
+                nextBtn.addEventListener("click", function () {
+                    const items = visibleItems();
+                    currentIndex = (currentIndex + 1) % items.length;
+                    updateLightboxContent(items[currentIndex]);
+                });
+
+                // Keyboard navigation for lightbox
+                document.addEventListener("keydown", function (e) {
+                    if (!lightbox.classList.contains("show")) return;
+
+                    if (e.key === "ArrowLeft") {
+                        prevBtn.click();
+                    } else if (e.key === "ArrowRight") {
+                        nextBtn.click();
+                    }
+                });
+
+                function updateLightboxContent(item) {
+                    const title = item.querySelector(
+                        ".portfolio-item-title"
+                    ).textContent;
+                    const category = item.querySelector(
+                        ".portfolio-item-category"
+                    ).textContent;
+                    const isVideo = category.trim() === "Videos";
+
+                    // Set up title and category
+                    lightboxTitle.textContent = title;
+                    lightboxCategory.textContent = category;
+
+                    if (isVideo) {
+                        // Handle video content
+                        const video = item.querySelector(".hidden-video");
+                        const videoSource = video.querySelector("source");
+                        const lightboxVideo =
+                            document.getElementById("lightbox-video");
+
+                        // Animate the change
+                        lightboxVideo.style.opacity = "0";
+                        setTimeout(() => {
+                            // Update video source
+                            document.getElementById(
+                                "lightbox-video-source"
+                            ).src = videoSource.src;
+
+                            // Show video, hide image
+                            lightboxImg.style.display = "none";
+                            lightboxVideo.style.display = "block";
+
+                            // Add error handling for video
+                            lightboxVideo.onerror = function () {
+                                console.error(
+                                    "Error loading video during navigation"
+                                );
+                                // Display a fallback message
+                                lightboxVideo.innerHTML =
+                                    '<p style="color: white; text-align: center; padding: 40px;">Video could not be loaded. Please try again later.</p>';
+                            };
+
+                            // Load and play the video
+                            lightboxVideo.load();
+                            lightboxVideo.style.opacity = "1";
+                        }, 300);
+                    } else {
+                        // Handle image content
+                        const image = item.querySelector("img");
+
+                        // Animate the image change
+                        lightboxImg.style.opacity = "0";
+                        setTimeout(() => {
+                            // Update image source
+                            lightboxImg.src = image.src;
+
+                            // Show image, hide video
+                            lightboxImg.style.display = "block";
+                            document.getElementById(
+                                "lightbox-video"
+                            ).style.display = "none";
+
+                            lightboxImg.style.opacity = "1";
+                        }, 300);
+                    }
+                }
+
+                // Load more functionality (simulated)
+                const loadMoreBtn = document.getElementById("load-more-btn");
+                const loader = document.getElementById("loader");
+                let loadCount = 0;
+
+                loadMoreBtn.addEventListener("click", function () {
+                    // Show loader
+                    loader.classList.add("show");
+                    loadMoreBtn.style.display = "none";
+
+                    // Simulate loading delay
+                    setTimeout(() => {
+                        loadCount++;
+
+                        if (loadCount >= 2) {
+                            // No more content to load
+                            loader.classList.remove("show");
+                            loadMoreBtn.style.display = "none";
+                            return;
+                        }
+
+                        // Hide loader and show button again
+                        loader.classList.remove("show");
+                        loadMoreBtn.style.display = "inline-block";
+
+                        // In a real implementation, you would:
+                        // 1. Fetch new portfolio items from server
+                        // 2. Append them to the grid
+                        // 3. Initialize their events and animations
+                    }, 1500);
+                });
+
+                // Basic error handling for images
+                document
+                    .querySelectorAll(".portfolio-item img")
+                    .forEach(img => {
+                        // Make images fully visible by default
+                        img.style.opacity = "1";
+
+                        // Basic error handling - replace with default image if load fails
+                        img.onerror = () => {
+                            console.error("Failed to load image:", img.src);
+                            img.src =
+                                "/static/images/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png";
+                        };
+                    });
+            });
+        </script>
+    </body>
+</html>

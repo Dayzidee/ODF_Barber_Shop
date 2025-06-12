@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Feedback - ODF Barber Shop Admin</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container my-5">
+      <h2>Quick Messages & Feedback</h2>
+      {% if feedbacks %}
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Message</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for fb in feedbacks %}
+          <tr>
+            <td>{{ fb.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>{{ fb.name }}</td>
+            <td>{{ fb.email }}</td>
+            <td>{{ fb.message }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="alert alert-info">No feedback messages yet.</div>
+      {% endif %}
+      <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary"
+        >Back to Dashboard</a
+      >
+    </div>
+  </body>
+</html>

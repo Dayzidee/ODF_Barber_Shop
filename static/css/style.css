@@ -1,0 +1,1702 @@
+/* Basic Reset & Page Styles (for demonstration) */
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    scroll-behavior: smooth; /* For smooth scrolling when nav links are clicked */
+    background-color: #f4f4f4; /* A light background for the page */
+    color: #333;
+}
+
+section {
+    padding: 60px 20px; /* Give some padding to each section */
+    min-height: 300px; /* Make sections visible for now */
+    border-bottom: 1px solid #ddd; /* Separate sections visually */
+}
+
+section:last-of-type {
+    border-bottom: none;
+}
+
+h1,
+h2 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* Placeholder styles for sections (you can remove these later) */
+#hero {
+    background-color: #333;
+    color: white;
+}
+#about {
+    background-color: #e9e9e9;
+}
+#services {
+    background-color: #f9f9f9;
+}
+#gallery {
+    background-color: #e2e2e2;
+}
+#testimonials {
+    background-color: #f0f0f0;
+}
+#booking {
+    background-color: #d9edf7;
+} /* Light blue for booking */
+#how-it-works {
+    background-color: #fafafa;
+}
+#contact {
+    background-color: #333;
+    color: white;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto; /* Center content */
+    padding: 0 20px;
+}
+
+/* Styles for the navigation bar (we'll build this next) */
+/* Navigation Bar Styles */
+.navbar {
+    background-color: #2c3e50; /* Dark blue-grey, adjust to your branding */
+    color: #ecf0f1; /* Light grey text */
+    padding: 15px 0;
+    position: fixed; /* Makes the navbar sticky */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Ensures it stays on top of other content */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between; /* Pushes logo to left, menu to right */
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #ecf0f1;
+    text-decoration: none;
+}
+
+.nav-logo:hover {
+    color: #3498db; /* A highlight color on hover */
+}
+
+.nav-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Arranges menu items horizontally */
+}
+
+.nav-menu li {
+    margin-left: 25px; /* Spacing between menu items */
+}
+
+.nav-menu li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 1em;
+    padding: 5px 0;
+    transition: color 0.3s ease;
+}
+
+.nav-menu li a:hover,
+.nav-menu li a.active {
+    /* 'active' class can be added with JS later for current section */
+    color: #3498db; /* Highlight color */
+    border-bottom: 2px solid #3498db;
+}
+
+.nav-cta {
+    background-color: #e74c3c; /* A distinct CTA color (e.g., red/orange) */
+    color: #fff !important; /* Important to override other link color */
+    padding: 8px 15px !important; /* Important to override other link padding */
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.nav-cta:hover {
+    background-color: #c0392b; /* Darker shade on hover */
+    border-bottom: none; /* No underline for button-like CTA */
+}
+
+/* Basic Hamburger Menu Styles (functionality will require JS) */
+.menu-toggle {
+    display: none; /* Hidden on desktop */
+    cursor: pointer;
+}
+
+.menu-toggle .bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    background-color: #ecf0f1;
+    transition: all 0.3s ease-in-out;
+}
+/* ... other navbar styles ... */
+
+.nav-menu li a:hover,
+.nav-menu li a.active-link {
+    /* Changed class name for clarity */
+    color: #3498db; /* Highlight color */
+    border-bottom: 2px solid #3498db;
+}
+
+/* Adjust body padding to prevent content from being hidden by fixed navbar */
+body {
+    padding-top: 70px; /* Adjust this value based on your navbar's height */
+}
+
+/* Responsive (Simple example for mobile menu visibility) */
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none; /* Hide by default on small screens */
+        flex-direction: column; /* Stack links vertically */
+        width: 100%;
+        position: absolute;
+        top: 65px; /* Adjust based on your navbar height */
+        left: 0;
+        background-color: #2c3e50; /* Same as navbar bg */
+        padding: 10px 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 999; /* Below navbar but above content */
+    }
+    /* ... other navbar styles ... */
+
+    .nav-menu li a:hover,
+    .nav-menu li a.active-link {
+        /* Use the same .active-link class */
+        background-color: #34495e;
+        color: #3498db;
+        border-bottom-color: #34495e;
+    }
+
+    .nav-menu.active {
+        /* This class will be toggled by JS */
+        display: flex; /* Show the menu when active */
+    }
+
+    .nav-menu li {
+        margin: 0; /* Reset margin for vertical layout */
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-menu li a {
+        display: block; /* Make links take full width for easier tapping */
+        padding: 15px 20px;
+        border-bottom: 1px solid #3e5771; /* Separator for links */
+    }
+    .nav-menu li:last-child a {
+        border-bottom: none; /* No border for the last link */
+    }
+
+    .nav-menu li a:hover,
+    .nav-menu li a.active-link {
+        /* For current section highlighting if added later */
+        background-color: #34495e; /* Slightly different bg on hover/active */
+        color: #3498db;
+        border-bottom-color: #34495e; /* Match bg or remove */
+    }
+
+    .nav-cta {
+        /* Ensure CTA is also full width and styled appropriately in mobile menu */
+        display: block;
+        margin: 10px 20px; /* Add some margin around it */
+        padding: 12px 20px !important;
+        text-align: center;
+    }
+    .nav-cta:hover {
+        background-color: #c0392b;
+    }
+
+    .menu-toggle {
+        display: block; /* Show hamburger icon */
+    }
+
+    /* Hamburger Icon Animation (Optional "X" toggle) */
+    .menu-toggle.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .menu-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+    .menu-toggle.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+}
+
+/* Hero Section Styles */
+#hero {
+    background-image: url("https://via.placeholder.com/1920x1080.png?text=Awesome+Barber+Hero+Image"); /* Replace with your image */
+    background-size: cover; /* Cover the entire section */
+    background-position: center center; /* Center the image */
+    background-repeat: no-repeat;
+    color: #fff; /* Text color on hero */
+    height: 100vh; /* Make hero section take full viewport height */
+    display: flex; /* Using flex to center content */
+    align-items: center; /* Vertically center */
+    justify-content: center; /* Horizontally center */
+    text-align: center;
+    position: relative; /* For the overlay positioning */
+    padding: 0; /* Remove default section padding for full bleed */
+    border-bottom: none; /* Optional: remove border if you want seamless to next section */
+}
+
+/* Optional: Video Background Styling (if you use it) */
+/*
+        #hero-video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            transform: translateX(-50%) translateY(-50%);
+            background-size: cover;
+        }
+        */
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    z-index: 1; /* Above the background, below the content */
+}
+
+#hero .hero-content {
+    /* Target .hero-content specifically within #hero */
+    position: relative; /* To ensure it's above the overlay */
+    z-index: 2;
+    padding: 20px; /* Add some padding around the content */
+}
+
+#hero h1 {
+    font-size: 3.5em; /* Large headline */
+    margin-bottom: 20px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #fff; /* Ensure h1 is white against dark bg/overlay */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Text shadow for readability */
+}
+
+#hero .subtitle {
+    font-size: 1.5em;
+    margin-bottom: 30px;
+    font-weight: 300;
+    color: #f0f0f0; /* Slightly off-white for subtitle */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* General Button Styles (can be reused) */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background-color: #e74c3c; /* Same as nav CTA, or a different primary color */
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #c0392b; /* Darker shade on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+.btn-hero {
+    /* Specific styles or sizing for hero button if needed */
+    font-size: 1.2em;
+    padding: 15px 30px;
+}
+
+/* Responsive adjustments for Hero */
+@media (max-width: 768px) {
+    #hero h1 {
+        font-size: 2.5em;
+    }
+    #hero .subtitle {
+        font-size: 1.2em;
+    }
+    .btn-hero {
+        font-size: 1em;
+        padding: 12px 25px;
+    }
+    #hero {
+        height: auto; /* Allow height to adjust to content on mobile */
+        min-height: 80vh; /* Still substantial but not strictly full height */
+        padding-top: 60px; /* Ensure content visible below nav */
+        padding-bottom: 60px;
+    }
+}
+@media (max-width: 480px) {
+    #hero h1 {
+        font-size: 2em;
+    }
+    #hero .subtitle {
+        font-size: 1em;
+    }
+}
+
+/* About Us Section Styles */
+#about {
+    background-color: #ffffff; /* White or a very light off-white background */
+    padding: 80px 20px; /* More padding for this content-heavy section */
+}
+
+#about h2 {
+    color: #333;
+    margin-bottom: 50px;
+}
+
+.about-content {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    gap: 40px; /* Space between image and text */
+}
+
+.about-image {
+    flex: 0 0 300px; /* Image container takes up fixed width, doesn't grow/shrink excessively */
+    /* Consider max-width if you want the image to be smaller on larger screens */
+}
+
+.about-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px; /* Slightly rounded corners for the image */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.about-text {
+    flex: 1; /* Text container takes remaining space */
+    text-align: left;
+}
+
+.about-text h3 {
+    font-size: 2em;
+    color: #2c3e50; /* Dark blue-grey from navbar, for consistency */
+    margin-bottom: 20px;
+}
+
+.about-text p,
+.about-text ul {
+    font-size: 1.1em;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.about-text ul {
+    list-style: none; /* Remove default bullets */
+    padding-left: 0;
+}
+
+.about-text ul li {
+    padding-left: 25px; /* Space for custom bullet */
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.about-text ul li::before {
+    content: "✓"; /* Custom bullet point (check mark) */
+    color: #27ae60; /* Green color for check mark */
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+/* Secondary Button Style (if not already defined, or to customize) */
+.btn-secondary {
+    background-color: #3498db; /* A blue, different from primary CTA */
+    color: #fff;
+    display: inline-block;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+    transform: translateY(-2px);
+}
+
+/* Responsive adjustments for About Section */
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column; /* Stack image and text vertically */
+        align-items: center; /* Center items when stacked */
+        text-align: center; /* Center text content as well */
+    }
+
+    .about-image {
+        flex: 0 0 auto; /* Reset flex basis */
+        width: 250px; /* Control image size on mobile */
+        margin-bottom: 30px;
+    }
+
+    .about-text {
+        text-align: left; /* Or center if you prefer for stacked layout */
+    }
+    .about-text h3 {
+        text-align: center;
+    }
+}
+
+/* Services Section Styles */
+#services {
+    background-color: #f9f9f9; /* A very light grey, slightly different from #about */
+    padding: 80px 20px;
+}
+
+#services h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.section-subtitle {
+    font-size: 1.2em;
+    color: #666;
+    text-align: center;
+    margin-bottom: 50px;
+    max-width: 700px; /* Constrain width for readability */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.desktop-only {
+    display: inline; /* Default behavior */
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(300px, 1fr)
+    ); /* Responsive grid */
+    gap: 30px; /* Space between cards */
+    margin-bottom: 50px;
+}
+
+.service-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden; /* Ensures image corners are rounded with the card */
+    display: flex;
+    flex-direction: column; /* Stack content within the card */
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.service-card img {
+    width: 100%;
+    height: 200px; /* Fixed height for images for consistency */
+    object-fit: cover; /* Ensures image covers the area, might crop */
+    display: block;
+}
+
+.service-card h3 {
+    font-size: 1.6em;
+    color: #2c3e50;
+    margin: 20px 20px 10px 20px;
+}
+
+.service-card .service-description {
+    font-size: 1em;
+    line-height: 1.6;
+    color: #555;
+    padding: 0 20px;
+    margin-bottom: 15px;
+    flex-grow: 1; /* Allows description to take up available space, pushing price/duration down */
+}
+
+.service-card .service-price {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #27ae60; /* Green for price, or your brand's accent color */
+    padding: 0 20px;
+    margin-bottom: 10px;
+}
+
+.service-card .service-duration {
+    font-size: 0.9em;
+    color: #777;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.services-cta {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.services-cta p {
+    font-size: 1.3em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Responsive adjustments for Services Section */
+@media (max-width: 768px) {
+    .services-grid {
+        grid-template-columns: 1fr; /* Stack cards on smaller screens */
+    }
+    .desktop-only {
+        display: none; /* Hide the <br> on mobile */
+    }
+    .section-subtitle {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .service-card h3 {
+        font-size: 1.4em;
+    }
+    .service-card .service-price {
+        font-size: 1.2em;
+    }
+}
+
+/* Gallery Section Styles */
+#gallery {
+    background-color: #ffffff; /* White or a very light background */
+    padding: 80px 20px;
+}
+
+#gallery h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Re-using .section-subtitle from Services, no need to redefine if identical */
+
+.gallery-grid {
+    display: grid;
+    /* Adjust minmax for desired item size, e.g., 250px for more items per row */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px; /* Smaller gap for a tighter image grid */
+}
+
+.gallery-item {
+    position: relative; /* For positioning the overlay */
+    overflow: hidden; /* To clip the image and overlay to the item's bounds */
+    border-radius: 8px; /* Optional: rounded corners for items */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer; /* Indicates it's interactive (for lightbox later) */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 250px; /* Or use 'auto' if aspect ratios vary significantly and you prefer that */
+    object-fit: cover; /* Ensures image covers the area, might crop */
+    display: block; /* Removes extra space below image */
+    transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.gallery-item-overlay {
+    position: absolute;
+    bottom: 0; /* Position at the bottom */
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black overlay */
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    opacity: 0; /* Hidden by default */
+    transform: translateY(100%); /* Start off-screen below */
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease;
+    font-size: 0.9em;
+}
+
+.gallery-item:hover .gallery-item-overlay {
+    opacity: 1; /* Show on hover */
+    transform: translateY(0); /* Slide in from bottom */
+}
+
+.gallery-item-overlay p {
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Responsive adjustments for Gallery Section */
+@media (max-width: 768px) {
+    .gallery-grid {
+        /* For 2 columns on tablet, you could use: */
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        /* Or stick to auto-fit for simplicity */
+    }
+    .gallery-item img {
+        height: 220px; /* Adjust image height for mobile if needed */
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-grid {
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(280px, 1fr)
+        ); /* Ensure cards don't get too squished */
+        gap: 10px;
+    }
+    .gallery-item img {
+        height: 200px;
+    }
+}
+
+/* Testimonials Section Styles */
+#testimonials {
+    background-color: #eef1f5; /* A slightly cool, light grey background */
+    padding: 80px 20px;
+}
+
+#testimonials h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Re-using .section-subtitle from Services, no need to redefine if identical */
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.testimonial-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes author to bottom if quote is short */
+}
+
+.testimonial-quote {
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 45px; /* Space for quote icon */
+}
+
+.testimonial-quote::before {
+    content: "“"; /* Opening quote character */
+    font-family: Georgia, serif; /* A font that has nice quote characters */
+    font-size: 4em; /* Large quote icon */
+    color: #3498db; /* Accent color for quote */
+    position: absolute;
+    left: 0px;
+    top: -10px;
+    line-height: 1;
+}
+
+.testimonial-quote p {
+    font-size: 1.1em;
+    line-height: 1.7;
+    color: #444;
+    font-style: italic;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    margin-top: auto; /* Pushes to bottom if card has extra space */
+}
+
+.testimonial-author img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Circular avatar */
+    margin-right: 15px;
+    object-fit: cover; /* In case avatar isn't perfectly square */
+}
+
+.testimonial-author h4 {
+    margin: 0 0 3px 0;
+    font-size: 1.1em;
+    color: #2c3e50;
+}
+
+.testimonial-author .client-location {
+    margin: 0;
+    font-size: 0.9em;
+    color: #777;
+}
+
+/* Responsive adjustments for Testimonials Section */
+@media (max-width: 768px) {
+    .testimonials-grid {
+        /* Already responsive with auto-fit, but you could force 1 column if preferred: */
+        grid-template-columns: 1fr;
+    }
+    .testimonial-quote p {
+        font-size: 1em;
+    }
+}
+
+/* Re-using .section-subtitle */
+
+.booking-form {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* Constrain form width */
+    margin: 0 auto; /* Center the form */
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Default to two columns */
+    gap: 20px 25px; /* Row gap, Column gap */
+    margin-bottom: 30px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1; /* Make this group span all columns */
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 0.95em;
+    color: #333;
+}
+
+.form-group label .required {
+    color: #e74c3c; /* Red for asterisk */
+    font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group input[type="email"],
+.form-group input[type="date"],
+.form-group input[type="url"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box; /* Important for padding and border not to expand width */
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3498db; /* Highlight color from nav */
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.form-group select[multiple] {
+    height: 120px; /* Give some height to multi-select */
+}
+.form-group select[multiple] option {
+    padding: 5px;
+}
+
+.form-group small {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* For the address line with city and postal code */
+.address-group .address-line-2 {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* City takes more space than postal code */
+    gap: 15px;
+    margin-top: 10px; /* Spacing from street address */
+}
+/* If streetAddress is also part of the grid, then it will be its own row first */
+.form-group.address-group > input[type="text"] {
+    /* Target direct child streetAddress */
+    margin-bottom: 10px;
+}
+
+.form-submit-area {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.btn-submit {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    /* Reuses .btn and .btn-primary styles */
+}
+
+.form-note {
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 15px;
+}
+
+/* Responsive adjustments for Booking Form */
+@media (max-width: 768px) {
+    .booking-form {
+        padding: 25px;
+    }
+    .form-grid {
+        grid-template-columns: 1fr; /* Stack all fields on smaller screens */
+        gap: 20px 0; /* Only row gap needed */
+    }
+    .address-group .address-line-2 {
+        grid-template-columns: 1fr; /* Stack city and postal code */
+        gap: 15px 0;
+    }
+}
+
+/* How It Works / Service Area Section Styles */
+#how-it-works {
+    background-color: #ffffff; /* White or very light grey */
+    padding: 80px 20px;
+}
+
+#how-it-works h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+/* Re-using .section-subtitle */
+
+.how-it-works-content {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    gap: 40px; /* Space between steps and map columns */
+    align-items: flex-start; /* Align items to the top */
+}
+
+.how-it-works-steps {
+    flex: 1; /* Takes up available space, can be adjusted */
+    min-width: 300px; /* Minimum width before wrapping */
+    margin-bottom: 30px; /* Space below if it wraps */
+}
+
+.service-area-map {
+    flex: 1; /* Takes up available space, can be adjusted */
+    min-width: 300px; /* Minimum width before wrapping */
+}
+
+.how-it-works-steps h3,
+.service-area-map h3 {
+    font-size: 1.8em;
+    color: #2c3e50; /* Dark blue-grey from navbar */
+    margin-bottom: 25px;
+    border-bottom: 2px solid #3498db; /* Accent underline */
+    padding-bottom: 10px;
+    display: inline-block; /* To make border-bottom only as wide as text */
+}
+
+.steps-list,
+.preparation-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 30px;
+}
+
+.steps-list li,
+.preparation-list li {
+    font-size: 1.05em;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 15px;
+    padding-left: 25px; /* Space for custom bullet/number */
+    position: relative;
+}
+
+.steps-list li strong {
+    /* For the number in the ordered list */
+    color: #3498db; /* Accent color for step number */
+    margin-right: 5px;
+}
+/* If you prefer styled numbers instead of manual 1. 2. 3. use CSS counters for ol */
+
+.steps-list {
+    counter-reset: step-counter;
+}
+.steps-list li::before {
+    counter-increment: step-counter;
+    content: counter(step-counter) ".";
+    font-weight: bold;
+    color: #3498db;
+    position: absolute;
+    left: 0;
+}
+
+.preparation-list li::before {
+    content: "▹"; /* Triangle bullet, or use ✓, • etc. */
+    color: #e74c3c; /* Another accent color */
+    position: absolute;
+    left: 0px;
+    font-weight: bold;
+}
+
+.how-it-works-steps h4 {
+    font-size: 1.3em;
+    color: #333;
+    margin-top: 30px; /* Space above "What we need from you" */
+    margin-bottom: 15px;
+}
+
+#map-placeholder iframe {
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100% !important; /* Override default iframe width if necessary */
+}
+
+.service-area-note {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 15px;
+    font-style: italic;
+}
+
+/* Responsive adjustments for How It Works Section */
+@media (max-width: 900px) {
+    /* Adjust breakpoint as needed */
+    .how-it-works-content {
+        flex-direction: column; /* Stack steps and map */
+    }
+    .how-it-works-steps,
+    .service-area-map {
+        flex-basis: 100%; /* Ensure they take full width when stacked */
+    }
+}
+
+/* Contact Section Styles */
+#contact {
+    background-color: #333; /* Dark background for contrast, like the navbar */
+    color: #ecf0f1; /* Light text color */
+    padding: 80px 20px;
+}
+
+#contact h2 {
+    color: #fff; /* White heading on dark background */
+    margin-bottom: 15px;
+}
+
+#contact .section-subtitle {
+    color: #bdc3c7; /* Lighter grey for subtitle on dark background */
+    margin-bottom: 50px;
+}
+
+.contact-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-around; /* Distribute space if items don't fill row */
+    align-items: flex-start;
+}
+
+.contact-details,
+.social-media-links {
+    flex: 1;
+    min-width: 300px; /* Minimum width before wrapping */
+    margin-bottom: 30px; /* Space below if it wraps */
+}
+
+.contact-details h3,
+.social-media-links h3 {
+    font-size: 1.8em;
+    color: #fff;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #3498db; /* Accent color from nav */
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.contact-details p,
+.social-media-links p {
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-size: 1.05em;
+}
+
+.contact-details ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.contact-details ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.contact-details ul li .contact-icon {
+    font-size: 1.4em;
+    color: #3498db; /* Accent color for icons */
+    margin-right: 15px;
+    width: 25px; /* Ensure alignment */
+    text-align: center;
+}
+
+.contact-details ul li a,
+.contact-details ul li span:not(.contact-icon) {
+    /* Target text span */
+    color: #ecf0f1;
+    text-decoration: none;
+}
+
+.contact-details ul li a:hover {
+    color: #3498db; /* Accent color on hover */
+}
+
+.contact-note {
+    font-size: 0.95em !important; /* Override p if needed */
+    font-style: italic;
+    color: #bdc3c7 !important; /* Override p if needed */
+    margin-top: 25px !important;
+}
+.contact-note a {
+    color: #3498db;
+    font-weight: bold;
+}
+.contact-note a:hover {
+    text-decoration: underline;
+}
+
+.social-icons {
+    display: flex;
+    gap: 20px; /* Space between social icons */
+    margin-top: 10px;
+}
+
+.social-icon {
+    font-size: 2.2em; /* Size of the social icon */
+    color: #ecf0f1; /* Default light color */
+    transition:
+        color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.social-icon:hover {
+    transform: scale(1.1); /* Slight zoom on hover */
+}
+
+/* Specific hover colors for brand recognition */
+.social-icon.instagram:hover {
+    color: #e1306c;
+}
+.social-icon.facebook:hover {
+    color: #1877f2;
+}
+.social-icon.tiktok:hover {
+    color: #ee1d52; /* One of TikTok's pinks, or use black/white */
+}
+.social-icon.x-twitter:hover {
+    color: #1da1f2; /* Or black for new X branding */
+}
+.social-icon.whatsapp:hover {
+    color: #25d366;
+}
+
+/* Optional Simple Contact Form Styles */
+.simple-contact-form {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #555;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.simple-contact-form h4 {
+    font-size: 1.5em;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.simple-contact-form input,
+.simple-contact-form textarea {
+    background-color: #444;
+    color: #fff;
+    border: 1px solid #666;
+    margin-bottom: 15px;
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+.simple-contact-form input::placeholder,
+.simple-contact-form textarea::placeholder {
+    color: #aaa;
+}
+.simple-contact-form button {
+    display: block;
+    width: 100%;
+    /* Uses .btn and .btn-secondary styles */
+}
+
+/* Responsive Adjustments for Contact */
+@media (max-width: 768px) {
+    .contact-content {
+        flex-direction: column;
+        align-items: center; /* Center items when stacked */
+        text-align: center;
+    }
+    .contact-details,
+    .social-media-links {
+        width: 100%;
+        max-width: 450px; /* Give some max width when stacked */
+    }
+    .contact-details ul li {
+        justify-content: center; /* Center list items */
+    }
+    .social-icons {
+        justify-content: center; /* Center social icons */
+    }
+    .contact-details h3,
+    .social-media-links h3 {
+        display: block; /* Make h3 take full width to center underline */
+        text-align: center;
+    }
+}
+
+/* Footer Styles */
+footer {
+    background-color: #222; /* A very dark grey, slightly different from contact section */
+    color: #aaa; /* A softer white/grey for less prominence */
+    text-align: center;
+    padding: 30px 20px; /* A bit more padding */
+    font-size: 0.9em;
+    line-height: 1.6;
+}
+
+footer p {
+    margin: 5px 0; /* Reduced margin for tighter packing if multiple lines */
+}
+
+.footer-links a {
+    color: #ccc; /* Lighter grey for links */
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer-links a:hover {
+    color: #fff; /* White on hover */
+    text-decoration: underline;
+}
+
+/* Lightbox Styles */
+.lightbox-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Dark semi-transparent overlay */
+    z-index: 2000; /* Ensure it's on top of everything */
+    justify-content: center; /* For flex centering of image */
+    align-items: center; /* For flex centering of image */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#lightbox-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain; /* Ensure whole image is visible, preserves aspect ratio */
+    border-radius: 5px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    /* Animation for image appearing (optional) */
+    animation: lightboxZoom 0.3s ease-in-out;
+}
+
+.lightbox-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 2.5em; /* Make X larger */
+    color: #fff;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.lightbox-close-btn:hover {
+    color: #ccc;
+}
+
+/* Optional zoom animation for lightbox image */
+@keyframes lightboxZoom {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Form Validation Error Styles */
+.input-error {
+    border-color: #e74c3c !important; /* Red border for error */
+    background-color: #fbecec; /* Light pink background for error field */
+}
+
+.input-error:focus {
+    /* Ensure focus style overrides error or combines well */
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.3) !important;
+}
+
+.form-alerts {
+    background-color: #f8d7da; /* Bootstrap's danger alert background */
+    color: #721c24; /* Bootstrap's danger alert text color */
+    border: 1px solid #f5c6cb; /* Bootstrap's danger alert border color */
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-alerts p {
+    margin: 0 0 5px 0;
+    font-size: 0.95em;
+}
+.form-alerts p:last-child {
+    margin-bottom: 0;
+}
+
+/* static/css/booking.css or add to style.css */
+
+/* General Booking Page Styles */
+.booking-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.booking-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.booking-header h1 {
+    color: #2c3e50; /* From main style.css */
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.booking-header p {
+    color: #7f8c8d; /* From main style.css */
+    font-size: 1.1em;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.booking-form {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px; /* Slightly reduced padding */
+}
+
+.form-section {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.form-section h2 {
+    color: #2c3e50;
+    font-size: 1.5em;
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+}
+.form-section h2 i {
+    margin-right: 10px;
+    color: #3498db; /* Accent color */
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px; /* Gutter compensation */
+}
+
+.form-group {
+    flex: 1 1 calc(50% - 20px); /* Two columns by default */
+    margin: 0 10px 20px;
+    min-width: 200px; /* Prevent extreme squishing */
+}
+
+.form-group.full-width {
+    flex: 1 1 calc(100% - 20px);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+.form-group label .text-danger {
+    color: #e74c3c;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px; /* Slightly reduced padding */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em; /* Use em for better scalability */
+    transition:
+        border-color 0.3s,
+        box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+.input-error-highlight {
+    /* For JS validation feedback */
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2) !important;
+}
+
+.form-text {
+    margin-top: 5px;
+    font-size: 0.85em;
+    color: #7f8c8d;
+}
+.form-subsection-title {
+    margin: 20px 0 15px;
+    font-size: 1.2em;
+    color: #2c3e50;
+    width: 100%; /* Ensure it spans full width if in a form-row */
+}
+.radio-group {
+    margin-top: 10px;
+    display: flex;
+    gap: 20px;
+}
+.radio-label {
+    display: inline-flex; /* Use inline-flex for better alignment */
+    align-items: center;
+    margin-right: 0; /* Reset margin as gap is used */
+    font-weight: normal; /* Override default label bolding if not desired */
+    cursor: pointer;
+}
+.radio-label input[type="radio"] {
+    margin-right: 8px;
+}
+
+.btn-book {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #3498db; /* From main style.css */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-book:hover {
+    background-color: #2980b9; /* From main style.css */
+}
+
+/* Service, Time Slot, Barber Card Styles */
+.service-list,
+.time-slot-grid,
+.barber-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.service-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.time-slot-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.barber-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.service-card,
+.time-slot-card,
+.barber-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.service-card:hover,
+.time-slot-card:hover,
+.barber-card:hover {
+    border-color: #3498db;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.service-card.selected,
+.time-slot-card.selected,
+.barber-card.selected {
+    border-color: #3498db;
+    background-color: rgba(
+        52,
+        152,
+        219,
+        0.08
+    ); /* Slightly more noticeable selection */
+    box-shadow: 0 3px 10px rgba(52, 152, 219, 0.2); /* Shadow with accent color */
+}
+
+.service-card input[type="checkbox"],
+.time-slot-card input[type="radio"],
+.barber-card input[type="radio"] {
+    display: none; /* Visually hide, but still functional */
+}
+
+.service-card label,
+.time-slot-card label,
+.barber-card label {
+    cursor: pointer;
+    display: block;
+    margin-bottom: 0; /* Override default label margin */
+}
+
+/* Service Card Specifics */
+.service-card h3 {
+    margin: 0 0 10px;
+    color: #2c3e50;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service-card .service-price {
+    color: #e74c3c;
+    font-weight: bold;
+    font-size: 1em; /* Relative to h3 */
+}
+
+.service-card p {
+    /* Description */
+    color: #555; /* Darker than form-text for better readability */
+    margin: 0 0 10px;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+.service-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85em;
+    color: #7f8c8d;
+}
+.service-meta i {
+    margin-right: 5px;
+}
+
+/* Time Slot Card Specifics */
+.time-slot-card {
+    text-align: center;
+}
+.time-slot-card .slot-date {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    font-size: 1em;
+}
+.time-slot-card .slot-time {
+    color: #555;
+    font-size: 0.9em;
+}
+.time-slot-card .slot-availability {
+    font-size: 0.8em;
+    padding: 3px 8px;
+    border-radius: 12px; /* Pill shape */
+    margin-top: 8px;
+    display: inline-block;
+    background-color: #2ecc71;
+    color: white;
+    font-weight: 500;
+}
+
+/* Barber Card Specifics */
+.barber-card {
+    text-align: center;
+}
+.barber-card .barber-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    overflow: hidden;
+    border: 2px solid #eee; /* Subtle border */
+}
+.barber-card .barber-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.barber-card .barber-name {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+.barber-card .barber-status {
+    font-size: 0.8em;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin-top: 5px;
+    display: inline-block;
+    background-color: #2ecc71;
+    color: white;
+    font-weight: 500;
+}
+
+/* Alert Boxes (for flash messages) */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 1em;
+}
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+/* Add other alert categories if used (warning, info) */
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+.booking-footer-contact {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.9em;
+}
+.booking-footer-contact a {
+    color: #3498db;
+    text-decoration: none;
+}
+.booking-footer-contact a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .booking-header h1 {
+        font-size: 2em;
+    }
+    .form-group {
+        flex: 1 1 100%; /* Stack form groups in a single column */
+        min-width: unset; /* Reset min-width */
+    }
+    .form-row {
+        margin: 0; /* Reset gutter compensation */
+    }
+
+    .service-list,
+    .time-slot-grid,
+    .barber-grid {
+        /* Ensure single column for cards on smaller screens */
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .booking-container {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+    .booking-form {
+        padding: 15px;
+    }
+    .form-section h2 {
+        font-size: 1.3em;
+    }
+    .service-card h3 {
+        font-size: 1.1em;
+    }
+    .btn-book {
+        font-size: 1em;
+        padding: 12px;
+    }
+}

@@ -1,0 +1,376 @@
+/* static/css/booking.css or add to style.css */
+
+/* General Booking Page Styles */
+.booking-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.booking-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.booking-header h1 {
+    color: #2c3e50; /* From main style.css */
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.booking-header p {
+    color: #7f8c8d; /* From main style.css */
+    font-size: 1.1em;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.booking-form {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px; /* Slightly reduced padding */
+}
+
+.form-section {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.form-section h2 {
+    color: #2c3e50;
+    font-size: 1.5em;
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+}
+.form-section h2 i {
+    margin-right: 10px;
+    color: #3498db; /* Accent color */
+}
+
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px; /* Gutter compensation */
+}
+
+.form-group {
+    flex: 1 1 calc(50% - 20px); /* Two columns by default */
+    margin: 0 10px 20px;
+    min-width: 200px; /* Prevent extreme squishing */
+}
+
+.form-group.full-width {
+    flex: 1 1 calc(100% - 20px);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+.form-group label .text-danger {
+    color: #e74c3c;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 12px; /* Slightly reduced padding */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em; /* Use em for better scalability */
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+.input-error-highlight { /* For JS validation feedback */
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2) !important;
+}
+
+
+.form-text {
+    margin-top: 5px;
+    font-size: 0.85em;
+    color: #7f8c8d;
+}
+.form-subsection-title {
+    margin: 20px 0 15px;
+    font-size: 1.2em;
+    color: #2c3e50;
+    width: 100%; /* Ensure it spans full width if in a form-row */
+}
+.radio-group {
+    margin-top: 10px;
+    display: flex;
+    gap: 20px;
+}
+.radio-label {
+    display: inline-flex; /* Use inline-flex for better alignment */
+    align-items: center;
+    margin-right: 0; /* Reset margin as gap is used */
+    font-weight: normal; /* Override default label bolding if not desired */
+    cursor: pointer;
+}
+.radio-label input[type="radio"] {
+    margin-right: 8px;
+}
+
+
+.btn-book {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #3498db; /* From main style.css */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-book:hover {
+    background-color: #2980b9; /* From main style.css */
+}
+
+/* Service, Time Slot, Barber Card Styles */
+.service-list, .time-slot-grid, .barber-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.service-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.time-slot-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.barber-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+
+.service-card, .time-slot-card, .barber-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.service-card:hover, .time-slot-card:hover, .barber-card:hover {
+    border-color: #3498db;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.service-card.selected, .time-slot-card.selected, .barber-card.selected {
+    border-color: #3498db;
+    background-color: rgba(52, 152, 219, 0.08); /* Slightly more noticeable selection */
+    box-shadow: 0 3px 10px rgba(52, 152, 219, 0.2); /* Shadow with accent color */
+}
+
+.service-card input[type="checkbox"],
+.time-slot-card input[type="radio"],
+.barber-card input[type="radio"] {
+    display: none; /* Visually hide, but still functional */
+}
+
+.service-card label, .time-slot-card label, .barber-card label {
+    cursor: pointer;
+    display: block;
+    margin-bottom: 0; /* Override default label margin */
+}
+
+/* Service Card Specifics */
+.service-card h3 {
+    margin: 0 0 10px;
+    color: #2c3e50;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.service-card .service-price {
+    color: #e74c3c;
+    font-weight: bold;
+    font-size: 1em; /* Relative to h3 */
+}
+
+.service-card p { /* Description */
+    color: #555; /* Darker than form-text for better readability */
+    margin: 0 0 10px;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+.service-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85em;
+    color: #7f8c8d;
+}
+.service-meta i {
+    margin-right: 5px;
+}
+
+/* Time Slot Card Specifics */
+.time-slot-card {
+    text-align: center;
+}
+.time-slot-card .slot-date {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    font-size: 1em;
+}
+.time-slot-card .slot-time {
+    color: #555;
+    font-size: 0.9em;
+}
+.time-slot-card .slot-availability {
+    font-size: 0.8em;
+    padding: 3px 8px;
+    border-radius: 12px; /* Pill shape */
+    margin-top: 8px;
+    display: inline-block;
+    background-color: #2ecc71;
+    color: white;
+    font-weight: 500;
+}
+
+/* Barber Card Specifics */
+.barber-card {
+    text-align: center;
+}
+.barber-card .barber-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    overflow: hidden;
+    border: 2px solid #eee; /* Subtle border */
+}
+.barber-card .barber-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.barber-card .barber-name {
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+.barber-card .barber-status {
+    font-size: 0.8em;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin-top: 5px;
+    display: inline-block;
+    background-color: #2ecc71;
+    color: white;
+    font-weight: 500;
+}
+
+/* Alert Boxes (for flash messages) */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 1em;
+}
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+/* Add other alert categories if used (warning, info) */
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
+.alert-info {
+    color: #0c5460;
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+}
+
+.booking-footer-contact {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.9em;
+}
+.booking-footer-contact a {
+    color: #3498db;
+    text-decoration: none;
+}
+.booking-footer-contact a:hover {
+    text-decoration: underline;
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .booking-header h1 {
+        font-size: 2em;
+    }
+    .form-group {
+        flex: 1 1 100%; /* Stack form groups in a single column */
+        min-width: unset; /* Reset min-width */
+    }
+    .form-row {
+        margin: 0; /* Reset gutter compensation */
+    }
+
+    .service-list,
+    .time-slot-grid,
+    .barber-grid {
+        /* Ensure single column for cards on smaller screens */
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .booking-container {
+        margin: 20px auto;
+        padding: 0 15px;
+    }
+    .booking-form {
+        padding: 15px;
+    }
+    .form-section h2 {
+        font-size: 1.3em;
+    }
+    .service-card h3 {
+        font-size: 1.1em;
+    }
+    .btn-book {
+        font-size: 1em;
+        padding: 12px;
+    }
+}

@@ -1,0 +1,63 @@
+# Virtual Environment
+venv/
+env/
+.venv/
+.env/
+
+# Environment Variables
+.env
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Local Database (SQLite)
+*.db
+*.sqlite
+*.sqlite3
+database.db
+odf_barber_shop.db
+
+# IDE Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Flask
+instance/
+
+# Uploads
+static/uploads/*
+!static/uploads/.gitkeep
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+

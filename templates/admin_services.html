@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title|default('ODF Barber Shop - Manage Services') }}</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/admin.css') }}"
+    />
+
+    <style>
+      .service-card {
+        transition: all 0.3s;
+      }
+      .service-card:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      .inactive-service {
+        opacity: 0.6;
+        background-color: #f8f9fa;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Admin Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('admin_dashboard') }}">
+          <i class="fas fa-cut me-2"></i>ODF Barber Shop Admin
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#adminNavbar"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="adminNavbar">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin_dashboard') }}"
+                >Dashboard</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{{ url_for('admin_view_appointments') }}"
+                >Appointments</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ url_for('admin_services') }}"
+                >Services</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin_barbers') }}"
+                >Barbers</a
+              >
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <span class="nav-link text-light">
+                <i class="fas fa-user me-1"></i>{{ admin_name }}
+              </span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin_logout') }}">
+                <i class="fas fa-sign-out-alt me-1"></i>Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-4">
+      <!-- Page Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">
+          <i class="fas fa-list-alt me-2"></i>Manage Services
+        </h1>
+        <a href="{{ url_for('admin_edit_service') }}" class="btn btn-success">
+          <i class="fas fa-plus me-1"></i>Add New Service
+        </a>
+      </div>
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show">
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+        ></button>
+      </div>
+      {% endfor %} {% endif %} {% endwith %}
+
+      <!-- Services List -->
+      <div class="row">
+        {% if services %} {% for service in services %}
+        <div class="col-md-6 col-xl-4 mb-4">
+          <div
+            class="card service-card h-100 {% if not service.is_active %}inactive-service{% endif %}"
+          >
+            <div
+              class="card-header d-flex justify-content-between align-items-center"
+            >
+              <h5 class="mb-0">{{ service.name }}</h5>
+              <span
+                class="badge {% if service.is_active %}bg-success{% else %}bg-secondary{% endif %}"
+              >
+                {% if service.is_active %}Active{% else %}Inactive{% endif %}
+              </span>
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{ service.description }}</p>
+              <div class="d-flex justify-content-between mb-2">
+                <span
+                  ><strong>Price:</strong> ₦{{ "%.2f"|format(service.price)
+                  }}</span
+                >
+                <span
+                  ><strong>Duration:</strong> {{ service.duration_minutes }}
+                  mins</span
+                >
+              </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+              <a
+                href="{{ url_for('admin_edit_service', service_id=service.id) }}"
+                class="btn btn-sm btn-primary"
+              >
+                <i class="fas fa-edit me-1"></i>Edit
+              </a>
+              <form
+                action="{{ url_for('toggle_service_status', service_id=service.id) }}"
+                method="POST"
+                class="d-inline"
+              >
+                <button
+                  type="submit"
+                  class="btn btn-sm {% if service.is_active %}btn-warning{% else %}btn-success{% endif %}"
+                >
+                  {% if service.is_active %}
+                  <i class="fas fa-toggle-off me-1"></i>Deactivate {% else %}
+                  <i class="fas fa-toggle-on me-1"></i>Activate {% endif %}
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %} {% else %}
+        <div class="col-12">
+          <div class="alert alert-info">
+            No services have been added yet. Click "Add New Service" to create
+            your first service.
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-5">
+      <div class="container text-center">
+        <p class="mb-0">&copy; 2025 ODF Barber Shop. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

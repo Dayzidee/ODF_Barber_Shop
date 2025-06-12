@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }}</title>
+
+    <!-- Link to your main stylesheet -->
+    <link rel="stylesheet" href="/static/css/style.css" />
+
+    <!-- OPTIONAL: Link to a booking-specific stylesheet -->
+    <link rel="stylesheet" href="/static/css/booking.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- REMOVED THE LARGE INLINE <style> BLOCK FROM HERE -->
+  </head>
+  <body>
+    <nav class="navbar" id="navbar">
+      <div class="container nav-container">
+        <a href="/" class="nav-logo">ODF Barber Shop</a>
+        <ul class="nav-menu" id="nav-menu-list">
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#services">Services</a></li>
+          <li><a href="/#gallery">Gallery</a></li>
+          <li><a href="/portfolio">Portfolio</a></li>
+          <li>
+            <a
+              href="{{ url_for('book_appointment') }}"
+              class="nav-cta active-link"
+              >Book Now</a
+            >
+          </li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+        <div class="menu-toggle" id="mobile-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="booking-container">
+      <div class="booking-header">
+        <h1>Book Your Appointment</h1>
+        <p>
+          Schedule your premium barber service right in the comfort of your
+          home.
+        </p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %} {% endif %} {% endwith %}
+
+      <form
+        class="booking-form"
+        method="POST"
+        action="{{ url_for('book_appointment') }}"
+        id="bookingForm"
+      >
+        <!-- 1. Service Selection -->
+        <div class="form-section">
+          <h2><i class="fas fa-cut"></i> Select Services</h2>
+          <p class="form-text">
+            Choose the services you'd like to receive. You can select multiple
+            options.
+          </p>
+
+          <div class="service-list">
+            {% for service in services %}
+            <div class="service-card" id="service-card-{{ service.id }}">
+              <input type="checkbox" name="servicesNeeded[]" id="service-{{
+              service.id }}" value="{{ service.id }}" {% if service.id|string in
+              form_data.get('servicesNeeded', []) %} checked {% endif %} />
+
+              <label for="service-{{ service.id }}">
+                <h3>
+                  {{ service.name }}
+                  <span class="service-price"
+                    >₦{{ "{:,.0f}".format(service.price) }}</span
+                  >
+                </h3>
+                <p>{{ service.description }}</p>
+                <div class="service-meta">
+                  <span
+                    ><i class="far fa-clock"></i> {{ service.duration_minutes }}
+                    mins</span
+                  >
+                </div>
+              </label>
+            </div>
+            {% endfor %}
+          </div>
+          <div
+            id="services-error"
+            class="form-error-message"
+            style="display: none; color: red; margin-top: 10px"
+          >
+            Please select at least one service.
+          </div>
+        </div>
+
+        <!-- 2. Time Slot Selection -->
+        <div class="form-section">
+          <h2><i class="far fa-calendar-alt"></i> Select Date & Time</h2>
+          <p class="form-text">
+            Choose your preferred appointment date and time slot.
+          </p>
+
+          <div class="time-slot-grid">
+            {% for slot in time_slots %}
+            <div class="time-slot-card" id="time-slot-card-{{ slot.id }}">
+              <input type="radio" name="timeSlot" id="time-slot-{{ slot.id }}"
+              value="{{ slot.id }}" {% if form_data and form_data.timeSlot ==
+              slot.id|string %} checked {% endif %}>
+              <label for="time-slot-{{ slot.id }}">
+                <div class="slot-date">{{ slot.text.split(' - ')[0] }}</div>
+                <div class="slot-time">{{ slot.text.split(' - ')[1] }}</div>
+                <div class="slot-availability">Available</div>
+              </label>
+            </div>
+            {% else %}
+            <p>
+              No time slots currently available. Please check back later or
+              contact us.
+            </p>
+            {% endfor %}
+          </div>
+          <div
+            id="timeslot-error"
+            class="form-error-message"
+            style="display: none; color: red; margin-top: 10px"
+          >
+            Please select a time slot.
+          </div>
+        </div>
+
+        <!-- 3. Barber Selection -->
+        <div class="form-section">
+          <h2><i class="fas fa-user"></i> Select Your Barber</h2>
+          <div class="barber-grid">
+            {% for barber in barbers %}
+            <div class="barber-card" id="barber-card-{{ barber.id }}">
+              <input type="radio" name="barber" id="barber-{{ barber.id }}"
+              value="{{ barber.id }}" {% if form_data and form_data.barber ==
+              barber.id|string %} checked {% endif %}>
+              <label for="barber-{{ barber.id }}">
+                <div class="barber-image">
+                  <img
+                    src="{{ url_for('static', filename='images/IMG-20250524-WA0001.jpg') }}"
+                    alt="{{ barber.name }}"
+                  />
+                </div>
+                <div class="barber-name">{{ barber.name }}</div>
+                <div class="barber-status">Available</div>
+              </label>
+            </div>
+            {% else %}
+            <p>No barbers currently available.</p>
+            {% endfor %}
+          </div>
+          <div
+            id="barber-error"
+            class="form-error-message"
+            style="display: none; color: red; margin-top: 10px"
+          >
+            Please select a barber.
+          </div>
+        </div>
+
+        <!-- 4. Customer Information -->
+        <div class="form-section">
+          <h2><i class="fas fa-info-circle"></i> Your Information</h2>
+          <p class="form-text">
+            Please provide your contact details and address for the home
+            service.
+          </p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullName"
+                >Full Name <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="fullName"
+                id="fullName"
+                class="form-control"
+                required
+                value="{{ form_data.fullName if form_data }}"
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone"
+                >Phone Number <span class="text-danger">*</span></label
+              >
+              <input
+                type="tel"
+                name="phone"
+                id="phone"
+                class="form-control"
+                required
+                value="{{ form_data.phone if form_data }}"
+              />
+              <small class="form-text"
+                >We'll use this to confirm your appointment.</small
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email"
+                >Email Address <span class="text-danger">*</span></label
+              >
+              <input
+                type="email"
+                name="email"
+                id="email"
+                class="form-control"
+                required
+                value="{{ form_data.email if form_data }}"
+              />
+            </div>
+            <div class="form-group">
+                <label class="radio-label">
+                    <input type="radio" name="isFirstTime" value="yes" 
+                           {% if form_data.get('isFirstTime') != 'no' %} checked {% endif %}> Yes
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="isFirstTime" value="no" 
+                           {% if form_data.get('isFirstTime') == 'no' %} checked {% endif %}> No
+                  </label>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="form-subsection-title">Service Location</h3>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="streetAddress"
+                >Street Address <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="streetAddress"
+                id="streetAddress"
+                class="form-control"
+                required
+                value="{{ form_data.streetAddress if form_data }}"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city"
+                >City/Town <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="city"
+                id="city"
+                class="form-control"
+                required
+                value="{{ form_data.city if form_data }}"
+              />
+            </div>
+            <div class="form-group">
+              <label for="postalCode"
+                >Postal Code <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                name="postalCode"
+                id="postalCode"
+                class="form-control"
+                required
+                pattern="\d{6}"
+                title="Please enter a 6-digit postal code."
+                value="{{ form_data.postalCode if form_data }}"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="locationLink">Google Maps Link (Optional)</label>
+              <input
+                type="url"
+                name="locationLink"
+                id="locationLink"
+                class="form-control"
+                value="{{ form_data.locationLink if form_data }}"
+              />
+              <small class="form-text"
+                >Sharing a Google Maps link helps our barber find your location
+                more easily.</small
+              >
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="specialInstructions"
+                >Special Instructions (Optional)</label
+              >
+              <textarea name="specialInstructions" id="specialInstructions" class="form-control" rows="4">{{ form_data.get('specialInstructions', '') }}</textarea>
+              <small class="form-text"
+                >Any specific instructions, preferences, or accessibility
+                information.</small
+              >
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-book">Book Your Appointment</button>
+      </form>
+
+      <div class="booking-footer-contact">
+        <p>
+          Questions? Contact us at:
+          <a href="mailto:williamskent25@gmail.com">williamskent25@gmail.com</a>
+          | <a href="tel:+2349114683483">+234 911 468 3483</a>
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        © <span id="currentYear"></span> ODF Barber Shop. All Rights Reserved.
+      </p>
+    </footer>
+
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Set current year in footer
+    document.getElementById("currentYear").textContent =
+      new Date().getFullYear();
+
+    // Card selection highlighting function
+    function setupCardSelection(cardSelector, inputType, isMultiple) {
+      const cards = document.querySelectorAll(cardSelector);
+
+      cards.forEach((card) => {
+        const input = card.querySelector(`input[type="${inputType}"]`);
+
+        // Set initial state on page load
+        if (input.checked) {
+          card.classList.add("selected");
+        }
+
+        card.addEventListener("click", function (event) {
+          // Only handle clicks that are NOT on the input or label
+          if (
+            event.target !== input &&
+            event.target.tagName !== "LABEL" &&
+            !event.target.closest("label")
+          ) {
+            if (isMultiple) {
+              input.checked = !input.checked;
+              card.classList.toggle("selected", input.checked);
+            } else {
+              input.checked = true;
+              // Remove selected from all, add to this
+              cards.forEach((c) => c.classList.remove("selected"));
+              card.classList.add("selected");
+            }
+          }
+        });
+
+        // Listen for input changes (keyboard navigation, etc.)
+        input.addEventListener("change", () => {
+          if (isMultiple) {
+            card.classList.toggle("selected", input.checked);
+          } else {
+            // Remove selected from all, add to this
+            cards.forEach((c) => c.classList.remove("selected"));
+            if (input.checked) {
+              card.classList.add("selected");
+            }
+          }
+        });
+      });
+    }
+
+    setupCardSelection(".service-card", "checkbox", true);
+    setupCardSelection(".time-slot-card", "radio", false);
+    setupCardSelection(".barber-card", "radio", false);
+
+    // Enhanced form validation
+    const bookingForm = document.getElementById("bookingForm");
+    const servicesError = document.getElementById("services-error");
+    const timeSlotError = document.getElementById("timeslot-error");
+    const barberError = document.getElementById("barber-error");
+
+    bookingForm.addEventListener("submit", function (event) {
+      let isValid = true;
+
+      // Check services
+      const servicesSelected = document.querySelectorAll(
+        'input[name="servicesNeeded[]"]:checked'
+      );
+      if (servicesSelected.length === 0) {
+        servicesError.style.display = "block";
+        isValid = false;
+      } else {
+        servicesError.style.display = "none";
+      }
+
+      // Check time slot
+      const timeSlotSelected = document.querySelector(
+        'input[name="timeSlot"]:checked'
+      );
+      if (!timeSlotSelected) {
+        timeSlotError.style.display = "block";
+        isValid = false;
+      } else {
+        timeSlotError.style.display = "none";
+      }
+
+      // Check barber
+      const barberSelected = document.querySelector(
+        'input[name="barber"]:checked'
+      );
+      if (!barberSelected) {
+        barberError.style.display = "block";
+        isValid = false;
+      } else {
+        barberError.style.display = "none";
+      }
+
+      // Check standard required fields
+      const requiredInputs = bookingForm.querySelectorAll(
+        "input[required], textarea[required]"
+      );
+      requiredInputs.forEach((input) => {
+        if (!input.value.trim()) {
+          input.classList.add("input-error-highlight"); // Add a class for visual feedback
+          isValid = false;
+        } else {
+          input.classList.remove("input-error-highlight");
+        }
+        // Simple email validation
+        if (
+          input.type === "email" &&
+          input.value.trim() &&
+          !/^\S+@\S+\.\S+$/.test(input.value)
+        ) {
+          input.classList.add("input-error-highlight");
+          isValid = false;
+        }
+        // Postal code validation (6 digits)
+        if (
+          input.id === "postalCode" &&
+          input.value.trim() &&
+          !/^\d{6}$/.test(input.value)
+        ) {
+          input.classList.add("input-error-highlight");
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        event.preventDefault();
+        alert("Please correct the errors in the form.");
+        // Focus first error field if possible
+        const firstErrorField = bookingForm.querySelector(
+          ".input-error-highlight, input:invalid"
+        );
+        if (firstErrorField) {
+          firstErrorField.focus();
+        }
+      }
+    });
+    // Remove error highlight on input
+    bookingForm
+      .querySelectorAll("input[required], textarea[required]")
+      .forEach((input) => {
+        input.addEventListener("input", () => {
+          input.classList.remove("input-error-highlight");
+        });
+      });
+
+    // Mobile menu toggle
+    const mobileMenu = document.getElementById("mobile-menu");
+    const navMenu = document.getElementById("nav-menu-list");
+
+    if (mobileMenu && navMenu) {
+      mobileMenu.addEventListener("click", function () {
+        this.classList.toggle("active");
+        navMenu.classList.toggle("active");
+      });
+    }
+  });
+</script>
+  </body>
+</html>

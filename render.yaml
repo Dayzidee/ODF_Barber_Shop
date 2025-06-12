@@ -1,0 +1,23 @@
+databases:
+  - name: odf-barber-shop-db
+    databaseName: odf_barber_shop
+    user: odf_user
+
+services:
+  - type: web
+    name: odf-barber-shop
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: odf-barber-shop-db
+          property: connectionString
+      - key: FLASK_SECRET_KEY
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: odf_admin
+      - key: ADMIN_PASSWORD
+        generateValue: true
+

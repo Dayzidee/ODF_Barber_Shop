@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ODF Barber Shop - Expert Barbers at Your Service</title>
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+      <div class="container nav-container">
+        <a href="#hero" class="nav-logo">ODF Barber Shop</a>
+        <ul class="nav-menu" id="nav-menu-list">
+          <!-- Added an ID here -->
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+
+          <li><a href="{{ url_for('portfolio') }}">Portfolio</a></li>
+          <li>
+            <a href="/book" class="nav-cta">Book Now</a>
+          </li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="menu-toggle" id="mobile-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <section
+        id="hero"
+        style="background-image: url('/static/images/IMG-20250524-WA0001.jpg')"
+      >
+        <!-- Using one of the ODF images as the hero background -->
+        <div class="hero-overlay"></div>
+        <!-- To darken the background for text readability -->
+        <div class="container hero-content">
+          <h1 data-aos="fade-down" data-aos-delay="200">
+            Expert Barbering, <br />Delivered to Your Doorstep.
+          </h1>
+          <p class="subtitle" data-aos="fade-down" data-aos-delay="400">
+            Experience ODF Barber Shop's premium services in the comfort of your
+            home.
+          </p>
+          <a
+            href="/book"
+            class="btn btn-primary btn-hero"
+            data-aos="fade-up"
+            data-aos-delay="600"
+            >Book Your Home Visit</a
+          >
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="container">
+          <h2 data-aos="fade-up">
+            Meet Your Barber & The Home Comfort Experience
+          </h2>
+          <div class="about-content">
+            <div class="about-image" data-aos="fade-right" data-aos-delay="200">
+              <img
+                src="/static/images/WhatsApp Image 2025-05-29 at 9.12.55 AM.jpeg"
+                alt="ODF Professional Barber"
+              />
+              <!-- 
+                            Tip: Replace placeholder with a friendly, professional photo of the barber.
+                            If multiple barbers, consider a team photo or individual small photos.
+                        -->
+            </div>
+            <div class="about-text" data-aos="fade-left" data-aos-delay="400">
+              <h3>Hi, I'm ODF!!</h3>
+              <p>
+                With over 7 years of experience in crafting sharp looks and
+                providing top-notch grooming services, I decided to bring the
+                barbershop experience directly to you. My passion is not just
+                about cutting hair, but about creating a style that boosts your
+                confidence and fits your lifestyle.
+              </p>
+              <p><strong>Why Choose Home Service?</strong></p>
+              <ul>
+                <li>
+                  <strong>Ultimate Convenience:</strong> No travel, no waiting
+                  rooms. Get a premium cut in the comfort of your own space, at
+                  a time that suits you.
+                </li>
+                <li>
+                  <strong>Personalized Attention:</strong>
+                  One-on-one service focused entirely on you, without the usual
+                  barbershop distractions.
+                </li>
+                <li>
+                  <strong>Hygienic & Professional:</strong> I adhere to the
+                  highest standards of cleanliness, using sanitized tools and
+                  maintaining a professional setup every time.
+                </li>
+                <li>
+                  <strong>Relax & Unwind:</strong> Your home is your sanctuary.
+                  Enjoy a truly relaxing grooming experience.
+                </li>
+              </ul>
+              <a href="#services" class="btn btn-secondary">See Our Services</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="services">
+        <div class="container">
+          <h2 data-aos="fade-up">Our Grooming Services</h2>
+          <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            Premium cuts and styling, right in your home.
+            <br class="desktop-only" />All services include a consultation to
+            ensure your perfect look.
+          </p>
+          <div class="services-grid">
+            <!-- Service Card 1 -->
+            <div class="service-card" data-aos="zoom-in" data-aos-delay="200">
+              <img
+                src="/static/images/classic fade.jpg"
+                alt="Classic Haircut"
+              />
+              <h3>The Classic Cut</h3>
+              <p class="service-description">
+                A timeless haircut tailored to your preference, finished with a
+                sharp lineup and style. Perfect for maintaining a clean,
+                professional look.
+              </p>
+              <p class="service-price">Starting from 15k - 20k in Naira</p>
+              <p class="service-duration">Approx. 45-60 mins</p>
+            </div>
+
+            <!-- Service Card 2 -->
+            <div class="service-card" data-aos="zoom-in" data-aos-delay="300">
+              <img
+                src="/static/images/Burst Fade.jpg"
+                alt="Beard Sculpting and Trim"
+              />
+              <h3>Dreadlocks & Braids</h3>
+              <p class="service-description">
+                A clean and professional haircut for men with dreads or braids
+                including proper maintainance.
+              </p>
+              <p class="service-price">Starting from 30k - 35k in Naira</p>
+              <p class="service-duration">Approx. 30-45 mins</p>
+            </div>
+
+            <!-- Service Card 3 -->
+            <div class="service-card" data-aos="zoom-in" data-aos-delay="400">
+              <img
+                src="/static/images/low fade.jpg"
+                alt="Executive Fade Haircut"
+              />
+              <h3>The Executive Fade</h3>
+              <p class="service-description">
+                A precision fade (skin, shadow, or taper) blended seamlessly,
+                combined with expert styling on top for a modern, sharp
+                appearance.
+              </p>
+              <p class="service-price">Starting from 15k in Naira</p>
+              <p class="service-duration">Approx. 60-75 mins</p>
+            </div>
+
+            <!-- Add more service cards as needed -->
+            <!-- Example:
+                    <div class="service-card">
+                        <img src="https://via.placeholder.com/400x250.png?text=Kids+Cut" alt="Kids Haircut">
+                        <h3>Kid's Cut (Under 12)</h3>
+                        <p class="service-description">Patient and stylish cuts for the young gentlemen, making their grooming experience fun and comfortable.</p>
+                        <p class="service-price">$30</p>
+                        <p class="service-duration">Approx. 30 mins</p>
+                    </div>
+                    -->
+          </div>
+          <div class="services-cta">
+            <p>Ready for your transformation?</p>
+            <a href="/book" class="btn btn-primary">Book Your Appointment</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery">
+        <div class="container">
+          <h2 data-aos="fade-up">Our Craftsmanship</h2>
+          <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            A glimpse into the transformations and styles we create.
+            <br class="desktop-only" />Quality you can see.
+          </p>
+          <div class="gallery-grid">
+            <!-- Gallery Item 1 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="200">
+              <img
+                src="/static/images/IMG-20250524-WA0009.jpg"
+                alt="Sharp Fade Haircut"
+              />
+              <div class="gallery-item-overlay">
+                <p>Sharp Fade</p>
+              </div>
+            </div>
+            <!-- Gallery Item 2 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="300">
+              <img src="/static/images/beard sculpt.jpeg" alt="Styled Beard" />
+              <div class="gallery-item-overlay">
+                <p>Styled Beard</p>
+              </div>
+            </div>
+            <!-- Gallery Item 3 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="400">
+              <img src="/static/images/braidssss.jpg" alt="Modern Pompadour" />
+              <div class="gallery-item-overlay">
+                <p>Braids</p>
+              </div>
+            </div>
+            <!-- Gallery Item 4 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="500">
+              <img src="/static/images/gentleman.jpg" alt="Clean Classic Cut" />
+              <div class="gallery-item-overlay">
+                <p>Clean Classic Cut</p>
+              </div>
+            </div>
+            <!-- Gallery Item 5 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="600">
+              <img
+                src="/static/images/creative design.jpg"
+                alt="Textured Crop Haircut"
+              />
+              <div class="gallery-item-overlay">
+                <p>Creative Designs</p>
+              </div>
+            </div>
+            <!-- Gallery Item 6 -->
+            <div class="gallery-item" data-aos="fade-up" data-aos-delay="700">
+              <img
+                src="/static/images/Locks.jpg"
+                alt="Men's Long Hair Styling"
+              />
+              <div class="gallery-item-overlay">
+                <p>Locks</p>
+              </div>
+            </div>
+            <!-- Add more gallery items as needed -->
+          </div>
+          <!-- Optional: Button to view more if you have many images -->
+
+          <div
+            class="gallery-more-cta"
+            style="text-align: center; margin-top: 40px"
+          >
+            <a href="{{ url_for('portfolio') }}" class="btn btn-secondary"
+              >View Full Portfolio</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials">
+        <div class="container">
+          <h2 data-aos="fade-up">What Our Clients Say</h2>
+          <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            Real words from satisfied customers who experienced the convenience
+            and quality of our home barber service.
+          </p>
+          <div class="testimonials-grid">
+            <!-- Testimonial 1 -->
+            <div
+              class="testimonial-card"
+              data-aos="fade-right"
+              data-aos-delay="200"
+            >
+              <div class="testimonial-quote">
+                <p>
+                  "Absolutely fantastic service! Daniel from ODF Barber Shop was
+                  professional, punctual, and gave me the best haircut I've had
+                  in years, all in the comfort of my home. Highly recommend!"
+                </p>
+              </div>
+              <div class="testimonial-author">
+                <img
+                  src="/static/images/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png"
+                  alt="Client John D."
+                />
+                <div>
+                  <h4>John D.</h4>
+                  <p class="client-location">Downtown Resident</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div
+              class="testimonial-card"
+              data-aos="fade-right"
+              data-aos-delay="300"
+            >
+              <div class="testimonial-quote">
+                <p>
+                  "As a busy professional, finding time for a haircut was always
+                  a challenge. This home service is a game-changer. Great cut,
+                  super convenient. Will definitely book again."
+                </p>
+              </div>
+              <div class="testimonial-author">
+                <img
+                  src="/static/images/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png"
+                  alt="Client Sarah A."
+                />
+                <div>
+                  <h4>Sarah A.</h4>
+                  <p class="client-location">Suburb Parent</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div
+              class="testimonial-card"
+              data-aos="fade-right"
+              data-aos-delay="400"
+            >
+              <div class="testimonial-quote">
+                <p>
+                  "I was a bit hesitant about a home barber at first, but the
+                  experience was amazing. The ODF Barber Shop team made me feel
+                  completely at ease, and the attention to detail was
+                  impeccable."
+                </p>
+              </div>
+              <div class="testimonial-author">
+                <img
+                  src="/static/images/person_24dp_1F1F1F_FILL0_wght400_GRAD0_opsz24.png"
+                  alt="Client Mike B."
+                />
+                <div>
+                  <h4>Mike B.</h4>
+                  <p class="client-location">University Area</p>
+                </div>
+              </div>
+            </div>
+            <!-- Add more testimonials as needed -->
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works">
+        <div class="container">
+          <h2 data-aos="fade-up">Your Premium At-Home Barber Experience</h2>
+          <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            Simple steps to enjoy professional grooming in your own space. Plus,
+            see if you're in our service zone!
+          </p>
+
+          <div class="how-it-works-content">
+            <div
+              class="how-it-works-steps"
+              data-aos="fade-right"
+              data-aos-delay="200"
+            >
+              <h3>The Process: Easy & Convenient</h3>
+              <ol class="steps-list">
+                <li>
+                  <strong>1. Book Your Slot:</strong> Use our easy
+                  <a href="/book">online form</a> to select your services,
+                  preferred date, time, and provide your location.
+                </li>
+                <li>
+                  <strong>2. Confirmation Call/Text:</strong>
+                  We'll contact you shortly after your request to confirm the
+                  exact appointment time and answer any questions.
+                </li>
+                <li>
+                  <strong>3. Barber Arrives:</strong> Your professional barber
+                  arrives at your doorstep, fully equipped and ready to provide
+                  a top-tier service.
+                </li>
+                <li>
+                  <strong>4. Relax & Get Styled:</strong> Sit back in your
+                  comfortable environment while we craft your perfect look. We
+                  handle the setup and cleanup.
+                </li>
+                <li>
+                  <strong>5. Look Great, Feel Great:</strong>
+                  Step out with a fresh, confident style, without ever leaving
+                  your home!
+                </li>
+              </ol>
+              <h4>What We Need From You:</h4>
+              <ul class="preparation-list">
+                <li>A comfortable chair for you to sit in.</li>
+                <li>
+                  A well-lit area (natural light is great, but good indoor
+                  lighting works too).
+                </li>
+                <li>Access to a power outlet (for clippers, etc.).</li>
+                <li>
+                  Clear a small space for the barber to work (approx. 5ft x
+                  5ft).
+                </li>
+              </ul>
+            </div>
+
+            <div
+              class="service-area-map"
+              data-aos="fade-left"
+              data-aos-delay="400"
+            >
+              <h3>Our Service Area</h3>
+              <p>
+                We currently serve all of Delta and surrounding areas. If you're
+                slightly outside, feel free to inquire!
+              </p>
+              <!-- Google Maps Embed Code Will Go Here -->
+              <div id="map-placeholder">
+                <!-- ODF-specific Google Maps embed -->
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d317718.69319297526!2d6.0!3d5.5!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1041a3e5b5c5b5b5%3A0x5b5b5b5b5b5b5b5b!2sDelta%20State%2C%20Nigeria!5e0!3m2!1sen!2sng!4v1621635420000!5m2!1sen!2sng"
+                  width="100%"
+                  height="400"
+                  style="border: 0"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  title="ODF Barber Shop Service Area - Delta State, Nigeria"
+                ></iframe>
+              </div>
+              <p class="service-area-note">
+                <strong>Note:</strong> A small travel surcharge may apply for
+                locations outside our primary zone. This will be confirmed
+                during booking.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="container">
+          <h2 data-aos="fade-up">Get In Touch & Stay Connected</h2>
+          <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
+            Have questions or just want to say hi? We'd love to hear from you.
+            <br class="desktop-only" />Follow us on social media for the latest
+            styles and updates!
+          </p>
+
+          <div class="contact-content">
+            <div
+              class="contact-details"
+              data-aos="fade-right"
+              data-aos-delay="200"
+            >
+              <h3>Direct Contact</h3>
+              <p>
+                For general inquiries, feedback, or partnership opportunities,
+                please reach out:
+              </p>
+              <ul>
+                <li>
+                  <span class="contact-icon"><i class="fas fa-phone"></i></span>
+                  <!-- Font Awesome icon -->
+                  <a href="tel:234 911 468 3483">+234 911 468 3483</a>
+                </li>
+                <li>
+                  <span class="contact-icon"
+                    ><i class="fas fa-envelope"></i
+                  ></span>
+                  <!-- Font Awesome icon -->
+                  <a href="mailto:williamskent25@gmail.com"
+                    >williamskent25@gmail.com</a
+                  >
+                </li>
+                <li>
+                  <span class="contact-icon"
+                    ><i class="fas fa-map-marker-alt"></i
+                  ></span>
+                  <!-- Font Awesome icon -->
+                  <span>Servicing Delta State & Surrounding Areas</span>
+                </li>
+              </ul>
+              <p class="contact-note">
+                For appointment bookings, please use our
+                <a href="/book">online booking form</a>
+                for the quickest response.
+              </p>
+            </div>
+
+            <div
+              class="social-media-links"
+              data-aos="fade-left"
+              data-aos-delay="300"
+            >
+              <h3>Follow Our Work</h3>
+              <p>See our latest cuts, styles, and behind-the-scenes on:</p>
+              <div class="social-icons">
+                <a
+                  href="https://instagram.com/odfbarbershop"
+                  target="_blank"
+                  aria-label="Instagram"
+                  class="social-icon instagram"
+                >
+                  <i class="fab fa-instagram"></i>
+                  <!-- Font Awesome icon -->
+                </a>
+                <a
+                  href="https://facebook.com/odfbarbershop"
+                  target="_blank"
+                  aria-label="Facebook"
+                  class="social-icon facebook"
+                >
+                  <i class="fab fa-facebook-f"></i>
+                  <!-- Font Awesome icon -->
+                </a>
+                <a
+                  href="https://wa.me/message/ZLUFYZCYVFUUA1"
+                  target="_blank"
+                  aria-label="WhatsApp"
+                  class="social-icon whatsapp"
+                >
+                  <i class="fab fa-whatsapp"></i>
+                  <!-- Font Awesome icon --></a
+                >
+                <a
+                  href="https://tiktok.com/@odfbarbershop"
+                  target="_blank"
+                  aria-label="TikTok"
+                  class="social-icon tiktok"
+                >
+                  <i class="fab fa-tiktok"></i>
+                  <!-- Font Awesome icon -->
+                </a>
+
+                <!-- Add more social links as needed -->
+                <!-- Example for X (Twitter):
+                            <a href="https://x.com/yourbarberhandle" target="_blank" aria-label="X (formerly Twitter)" class="social-icon x-twitter">
+                                <i class="fab fa-xing"></i> or <i class="fab fa-twitter"></i>
+                            </a>
+                            -->
+              </div>
+            </div>
+          </div>
+          <!-- Optional: Simple Contact Form for general inquiries (if desired) -->
+
+          <div class="simple-contact-form">
+            <h4>Quick Message/Feedback</h4>
+            <form action="{{ url_for('home') }}#contact" method="POST">
+              <input type="text" name="name" placeholder="Your Name" required />
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                required
+              />
+              <textarea
+                name="message"
+                rows="3"
+                placeholder="Your Message"
+                required
+              ></textarea>
+              <button type="submit" class="btn btn-secondary">
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        © <span id="currentYear"></span> ODF Barber Shop. All Rights Reserved.
+      </p>
+      <!-- Optional: Add links to Privacy Policy / Terms of Service if you have them -->
+      <!--
+        <p class="footer-links">
+            <a href="/privacy-policy.html">Privacy Policy</a> |
+            <a href="/terms-of-service.html">Terms of Service</a>
+        </p>
+        -->
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Your Custom Script (Load this after AOS) -->
+    <script src="/static/js/script.js"></script>
+  </body>
+</html>

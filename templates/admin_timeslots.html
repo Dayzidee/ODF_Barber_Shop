@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        .slot-card {
+            border-left-width: 5px;
+            transition: all 0.2s ease-in-out;
+        }
+        .slot-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .slot-available { border-left-color: #28a745; }
+        .slot-unavailable { border-left-color: #6c757d; }
+        .slot-full { border-left-color: #dc3545; }
+        
+        .slot-card .badge {
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('admin_dashboard') }}">
+                <i class="fas fa-cut me-2"></i>ODF Barber Shop Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_view_appointments') }}">Appointments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_services') }}">Services</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('admin_timeslots') }}">Time Slots</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_barbers') }}">Barbers</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item"><span class="nav-link text-light"><i class="fas fa-user me-1"></i>{{ admin_name }}</span></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_logout') }}"><i class="fas fa-sign-out-alt me-1"></i>Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-4">
+        <!-- Page Header & Controls -->
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+            <h1 class="mb-0"><i class="fas fa-clock me-2"></i>Manage Time Slots</h1>
+            <div class="d-flex flex-wrap gap-2">
+                <form action="{{ url_for('generate_new_timeslots') }}" method="POST" onsubmit="return confirm('Generate new slots for the next 14 days?');">
+            </div>
+        </div>
+
+        <!-- Filter Form -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form method="GET" action="{{ url_for('admin_timeslots') }}">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-4">
+                            <label for="date_filter" class="form-label">Filter by Date</label>
+                            <input type="date" class="form-control" id="date_filter" name="date_filter" value="{{ date_filter or '' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-filter me-1"></i>Filter</button>
+                            <a href="{{ url_for('admin_timeslots') }}" class="btn btn-secondary"><i class="fas fa-times me-1"></i>Clear</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Time Slots Grid -->
+        <div class="row">
+            {% if timeslots_page.items %}
+                {% for timeslot in timeslots_page.items %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    {% set slot_status = 'available' %}
+                    {% if not timeslot.is_available %}
+                        {% set slot_status = 'unavailable' %}
+                    {% elif timeslot.is_fully_booked %}
+                        {% set slot_status = 'full' %}
+                    {% endif %}
+
+                    <div class="card slot-card slot-{{ slot_status }} h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h5 class="card-title mb-1">{{ timeslot.date.strftime('%a, %B %d, %Y') }}</h5>
+                                    <p class="card-subtitle text-muted">{{ timeslot.period.value }}</p>
+                                </div>
+                                {% if slot_status == 'available' %}
+                                <span class="badge bg-success">Available</span>
+                                {% elif slot_status == 'full' %}
+                                <span class="badge bg-danger">Full</span>
+                                {% else %}
+                                <span class="badge bg-secondary">Unavailable</span>
+                                {% endif %}
+                            </div>
+                            <hr>
+                            <p class="card-text mb-2">
+                                <i class="fas fa-user-tie me-2"></i><strong>Barber:</strong> {{ timeslot.barber.name }}
+                            </p>
+                            <p class="card-text">
+                                <i class="fas fa-calendar-check me-2"></i><strong>Appointments:</strong> 
+                                {{ timeslot.current_appointments }} / {{ timeslot.max_appointments }}
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0 pb-3">
+                            <form action="{{ url_for('toggle_timeslot_availability', timeslot_id=timeslot.id) }}" method="POST" class="d-grid">
+                                <button type="submit" class="btn btn-sm {% if timeslot.is_available %}btn-outline-secondary{% else %}btn-outline-success{% endif %}">
+                                    {% if timeslot.is_available %}
+                                        <i class="fas fa-toggle-off me-1"></i>Mark as Unavailable
+                                    {% else %}
+                                        <i class="fas fa-toggle-on me-1"></i>Mark as Available
+                                    {% endif %}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info text-center">
+                        <p class="mb-0">No time slots found for the selected criteria.</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Pagination -->
+        {% if timeslots_page.pages > 1 %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item {{ 'disabled' if not timeslots_page.has_prev }}">
+                    <a class="page-link" href="{{ url_for('admin_timeslots', page=timeslots_page.prev_num, date_filter=date_filter) if timeslots_page.has_prev else '#' }}">«</a>
+                </li>
+                {% for page_num in timeslots_page.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                    {% if page_num %}
+                        <li class="page-item {{ 'active' if page_num == timeslots_page.page }}">
+                            <a class="page-link" href="{{ url_for('admin_timeslots', page=page_num, date_filter=date_filter) }}">{{ page_num }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endfor %}
+                <li class="page-item {{ 'disabled' if not timeslots_page.has_next }}">
+                    <a class="page-link" href="{{ url_for('admin_timeslots', page=timeslots_page.next_num, date_filter=date_filter) if timeslots_page.has_next else '#' }}">»</a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">© {{ now.year }} ODF Barber Shop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

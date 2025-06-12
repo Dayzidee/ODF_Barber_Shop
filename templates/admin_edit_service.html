@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title|default('ODF Barber Shop - Edit Service') }}</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <!-- Custom CSS -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/admin.css') }}"
+    />
+  </head>
+  <body>
+    <!-- Admin Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('admin_dashboard') }}">
+          <i class="fas fa-cut me-2"></i>ODF Barber Shop Admin
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#adminNavbar"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="adminNavbar">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin_dashboard') }}"
+                >Dashboard</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="{{ url_for('admin_view_appointments') }}"
+                >Appointments</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ url_for('admin_services') }}"
+                >Services</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin_barbers') }}"
+                >Barbers</a
+              >
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <span class="nav-link text-light">
+                <i class="fas fa-user me-1"></i>{{ admin_name }}
+              </span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin_logout') }}">
+                <i class="fas fa-sign-out-alt me-1"></i>Logout
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-4">
+      <!-- Page Header -->
+      <div class="mb-4">
+        <h1>{{ form_title }}</h1>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="{{ url_for('admin_services') }}">Services</a>
+            </li>
+            <li class="breadcrumb-item active">{{ form_title }}</li>
+          </ol>
+        </nav>
+      </div>
+
+      <!-- Flash Messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show">
+        {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+        ></button>
+      </div>
+      {% endfor %} {% endif %} {% endwith %}
+
+      <!-- Service Form -->
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <form
+            method="POST"
+            action="{{ url_for('admin_edit_service', service_id=service.id) if service.id else url_for('admin_edit_service') }}"
+          >
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="name" class="form-label"
+                  >Service Name <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  value="{{ service.name }}"
+                  required
+                />
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="price" class="form-label"
+                  >Price (₦) <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="price"
+                  name="price"
+                  value="{{ service.price or '' }}"
+                  step="0.01"
+                  min="0"
+                  required
+                />
+                <small class="text-muted"
+                  >Enter price in Naira (e.g., 15000)</small
+                >
+              </div>
+
+              <div class="col-md-3 mb-3">
+                <label for="duration_minutes" class="form-label"
+                  >Duration (minutes) <span class="text-danger">*</span></label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="duration_minutes"
+                  name="duration_minutes"
+                  value="{{ service.duration_minutes }}"
+                  min="5"
+                  step="5"
+                  required
+                />
+              </div>
+
+              <div class="col-12 mb-3">
+                <label for="description" class="form-label"
+                  >Description <span class="text-danger">*</span></label
+                >
+                <textarea
+                  class="form-control"
+                  id="description"
+                  name="description"
+                  rows="4"
+                  required
+                >
+{{ service.description }}</textarea
+                >
+              </div>
+
+              <div class="col-12 mb-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="is_active"
+                    name="is_active"
+                    {%
+                    if
+                    service.is_active
+                    or
+                    not
+                    service.id
+                    %}checked{%
+                    endif
+                    %}
+                  />
+                  <label class="form-check-label" for="is_active">
+                    Active Service
+                  </label>
+                  <small class="d-block text-muted"
+                    >Inactive services won't be shown to customers when
+                    booking.</small
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-3">
+              <a
+                href="{{ url_for('admin_services') }}"
+                class="btn btn-secondary"
+              >
+                <i class="fas fa-arrow-left me-1"></i>Back to Services
+              </a>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-1"></i>Save Service
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-3 mt-5">
+      <div class="container text-center">
+        <p class="mb-0">&copy; 2025 ODF Barber Shop. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
