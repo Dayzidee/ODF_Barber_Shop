@@ -543,11 +543,13 @@ def admin_timeslots():
         today = datetime.now(timezone.utc).date()
         query = query.filter(TimeSlot.date >= today)
     timeslots_page = query.paginate(page=page, per_page=per_page, error_out=False)
+    barbers = Barber.query.filter_by(is_active=True).all()
     current_datetime_obj = datetime.now(timezone.utc)
     return render_template(
         "admin_timeslots.html",
         title="Manage Time Slots",
         timeslots_page=timeslots_page,
+        barbers=barbers,
         date_filter=date_filter_str,
         admin_name=session.get("admin_name", "Administrator"),
         now=current_datetime_obj
@@ -578,6 +580,146 @@ def generate_new_timeslots():
     except Exception as e:
         db.session.rollback()
         flash(f"An error occurred while generating time slots: {str(e)}", "danger")
+    return redirect(url_for('admin_timeslots'))
+
+@app.route("/admin/timeslot/add", methods=["POST"])
+@login_required
+def add_timeslot():
+    try:
+        date_str = request.form.get("date")
+        period_str = request.form.get("period")
+        barber_id = int(request.form.get("barber_id"))
+        max_appointments = int(request.form.get("max_appointments", 2))
+        
+        # Validate date
+        try:
+            date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            flash("Invalid date format.", "danger")
+            return redirect(url_for('admin_timeslots'))
+        
+        # Validate period
+        try:
+            period = TimeSlotPeriod[period_str]
+        except KeyError:
+            flash("Invalid time period.", "danger")
+            return redirect(url_for('admin_timeslots'))
+        
+        # Validate barber
+        barber = Barber.query.get(barber_id)
+        if not barber or not barber.is_active:
+            flash("Invalid or inactive barber selected.", "danger")
+            return redirect(url_for('admin_timeslots'))
+        
+        # Check if timeslot already exists
+        existing_slot = TimeSlot.query.filter_by(
+            date=date, period=period, barber_id=barber_id
+        ).first()
+        if existing_slot:
+            flash(f"A timeslot for {date.strftime('%B %d, %Y')} - {period.value} with {barber.name} already exists.", "warning")
+            return redirect(url_for('admin_timeslots'))
+        
+        # Create new timeslot
+        new_timeslot = TimeSlot(
+            date=date,
+            period=period,
+            barber_id=barber_id,
+            is_available=True,
+            max_appointments=max_appointments,
+            current_appointments=0
+        )
+        
+        db.session.add(new_timeslot)
+        db.session.commit()
+        flash(f"Successfully added timeslot for {date.strftime('%B %d, %Y')} - {period.value}.", "success")
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error adding timeslot: {str(e)}", "danger")
+    
+    return redirect(url_for('admin_timeslots'))
+
+@app.route("/admin/timeslot/<int:timeslot_id>/edit", methods=["POST"])
+@login_required
+def edit_timeslot(timeslot_id):
+    timeslot = TimeSlot.query.get_or_404(timeslot_id)
+    
+    try:
+        date_str = request.form.get("date")
+        period_str = request.form.get("period")
+        barber_id = int(request.form.get("barber_id"))
+        max_appointments = int(request.form.get("max_appointments", 2))
+        
+        # Validate date
+        try:
+            date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            flash("Invalid date format.", "danger")
+            return redirect(url_for('admin_timeslots'))
+        
+        # Validate period
+        try:
+            period = TimeSlotPeriod[period_str]
+        except KeyError:
+            flash("Invalid time period.", "danger")
+            return redirect(url_for('admin_timeslots'))
+        
+        # Validate barber
+        barber = Barber.query.get(barber_id)
+        if not barber or not barber.is_active:
+            flash("Invalid or inactive barber selected.", "danger")
+            return redirect(url_for('admin_timeslots'))
+        
+        # Validate max appointments
+        if max_appointments < timeslot.current_appointments:
+            flash(f"Cannot set max appointments to {max_appointments}. There are already {timeslot.current_appointments} appointments booked.", "danger")
+            return redirect(url_for('admin_timeslots'))
+        
+        # Check if another timeslot exists with the new values (unless it's the same timeslot)
+        existing_slot = TimeSlot.query.filter_by(
+            date=date, period=period, barber_id=barber_id
+        ).filter(TimeSlot.id != timeslot_id).first()
+        if existing_slot:
+            flash(f"A timeslot for {date.strftime('%B %d, %Y')} - {period.value} with {barber.name} already exists.", "warning")
+            return redirect(url_for('admin_timeslots'))
+        
+        # Update timeslot
+        timeslot.date = date
+        timeslot.period = period
+        timeslot.barber_id = barber_id
+        timeslot.max_appointments = max_appointments
+        
+        db.session.commit()
+        flash(f"Successfully updated timeslot for {date.strftime('%B %d, %Y')} - {period.value}.", "success")
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error updating timeslot: {str(e)}", "danger")
+    
+    return redirect(url_for('admin_timeslots'))
+
+@app.route("/admin/timeslot/<int:timeslot_id>/delete", methods=["POST"])
+@login_required
+def delete_timeslot(timeslot_id):
+    timeslot = TimeSlot.query.get_or_404(timeslot_id)
+    
+    try:
+        # Check if there are any appointments
+        if timeslot.current_appointments > 0:
+            flash(f"Cannot delete timeslot. There are {timeslot.current_appointments} appointment(s) booked for this slot.", "danger")
+            return redirect(url_for('admin_timeslots'))
+        
+        date_str = timeslot.date.strftime('%B %d, %Y')
+        period_str = timeslot.period.value
+        
+        db.session.delete(timeslot)
+        db.session.commit()
+        flash(f"Successfully deleted timeslot for {date_str} - {period_str}.", "success")
+        
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Error deleting timeslot: {str(e)}", "danger")
+    
     return redirect(url_for('admin_timeslots'))
 
 @app.route("/admin/appointments")
